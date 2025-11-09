@@ -19,7 +19,7 @@ export default function FounderSection() {
           <div className="relative order-2 lg:order-1">
             <div className="aspect-square hologram rounded-3xl overflow-hidden relative">
               <Image
-                src="/adarsh.png"
+                src="/adarsh.jpeg"
                 alt="Adarsh Kumar"
                 fill
                 className="object-cover"
