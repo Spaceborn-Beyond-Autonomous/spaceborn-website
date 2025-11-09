@@ -1,11 +1,11 @@
 'use client'
 
-import React, { useRef, useMemo } from 'react'
+import { useRef, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Points, PointMaterial } from '@react-three/drei'
 import * as THREE from 'three'
 
-function Stars(props: any) {
+function Stars() {
   const ref = useRef<THREE.Points>(null!)
   const [sphere] = useMemo(() => {
     const positions = new Float32Array(5000 * 3)
@@ -30,7 +30,7 @@ function Stars(props: any) {
 
   return (
     <group rotation={[0, 0, Math.PI / 4]}>
-      <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
+      <Points ref={ref} positions={sphere} stride={3} frustumCulled={false}>
         <PointMaterial
           transparent
           color="#FFFFFF"
@@ -101,10 +101,7 @@ function Nebula() {
 export default function GalaxyBackground() {
   return (
     <div className="fixed inset-0 -z-10">
-      <Canvas
-        camera={{ position: [0, 0, 1] }}
-        gl={{ alpha: true, antialias: true }}
-      >
+      <Canvas camera={{ position: [0, 0, 1] }} gl={{ alpha: true, antialias: true }}>
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} />
         <Stars />

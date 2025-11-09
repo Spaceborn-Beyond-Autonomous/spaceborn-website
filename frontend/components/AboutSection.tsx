@@ -1,14 +1,8 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
-import { useRef } from 'react'
 import { Rocket, Brain, Globe, Zap } from 'lucide-react'
 
 export default function AboutSection() {
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref as any, { once: true, margin: "-100px" })
-
   const features = [
     {
       icon: Brain,
@@ -32,59 +26,43 @@ export default function AboutSection() {
     },
   ]
 
+  const stats = [
+    { number: '1000+', label: 'Sites Protected' },
+    { number: '99.9%', label: 'Threat Detection Rate' },
+    { number: '24/7', label: 'Security Coverage' },
+  ]
+
   return (
     <section id="about" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-linear-to-b from-transparent via-gray-900/20 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/20 to-transparent" />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-        >
           <h2 className="text-4xl lg:text-6xl font-bold mb-6 text-glow">
-            <span className="text-white tracking-wider">
-              SECURITY FIRST
-            </span>
+            <span className="text-white tracking-wider">SECURITY FIRST</span>
           </h2>
           <p className="text-xl text-white/80 max-w-3xl mx-auto">
             At Spaceborn, we're not just building drones—we're crafting the future of autonomous security. 
             Our mission is to protect what matters most, creating intelligent security systems 
             that provide unmatched surveillance and threat response capabilities.
           </p>
-        </motion.div>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {features.map((feature, index) => (
-            <div key={feature.title} className="group">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              whileHover={{ scale: 1.05, y: -10 }}
-            >
-              <div className="hologram rounded-2xl p-6 h-full hover:border-white/50 transition-all duration-300 glow-border">
-                <div className="mb-4">
-                  <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform glow-border">
-                    <feature.icon className="h-6 w-6 text-black" />
-                  </div>
+          {features.map((feature) => (
+            <div key={feature.title} className="hologram rounded-2xl p-6 hover:border-white/50 transition-all duration-300 group">
+              <div className="mb-4">
+                <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <feature.icon className="h-6 w-6 text-black" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3 uppercase tracking-wide">{feature.title}</h3>
-                <p className="text-white/70">{feature.description}</p>
               </div>
-            </motion.div>
+              <h3 className="text-xl font-semibold text-white mb-3 uppercase tracking-wide">{feature.title}</h3>
+              <p className="text-white/70">{feature.description}</p>
             </div>
           ))}
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
           <div>
             <h3 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide text-glow">
               Our Vision for Security
@@ -101,44 +79,25 @@ export default function AboutSection() {
             </p>
             
             <div className="grid grid-cols-3 gap-6">
-              {[
-                { number: '1000+', label: 'Sites Protected' },
-                { number: '99.9%', label: 'Threat Detection Rate' },
-                { number: '24/7', label: 'Security Coverage' },
-              ].map((stat, index) => (
+              {stats.map((stat) => (
                 <div key={stat.label} className="text-center">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
-                >
-                  <div className="text-2xl font-bold text-white">
-                    {stat.number}
-                  </div>
+                  <div className="text-2xl font-bold text-white">{stat.number}</div>
                   <div className="text-sm text-white/60">{stat.label}</div>
-                </motion.div>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="relative">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
             <div className="aspect-square hologram rounded-3xl flex items-center justify-center relative overflow-hidden">
               <div className="absolute inset-0 cyber-grid opacity-20" />
-              <div className="w-32 h-32 bg-white rounded-full animate-pulse-slow flex items-center justify-center glow-border relative z-10">
+              <div className="w-32 h-32 bg-white rounded-full animate-pulse-slow flex items-center justify-center relative z-10">
                 <Rocket className="h-16 w-16 text-black animate-float" />
               </div>
             </div>
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full animate-spin-slow glow-border" />
-            <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-gray-500/20 rounded-full animate-pulse glow-border" />
-          </motion.div>
+            <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full animate-spin-slow" />
+            <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-gray-500/20 rounded-full animate-pulse" />
           </div>
-        </motion.div>
         </div>
       </div>
     </section>

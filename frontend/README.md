@@ -193,4 +193,4 @@ This project is licensed under the MIT License.
 
 ---
 
-**Built with ❤️ for the future of autonomous flight** 🚁✨
+**Built with ❤️ for the future of autonomous security** 🛡️✨

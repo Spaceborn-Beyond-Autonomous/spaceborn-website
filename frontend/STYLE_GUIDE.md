@@ -1,7 +1,7 @@
 # Spaceborn Design System & Style Guide
 
 ## Brand Identity
-**Spaceborn** represents the fusion of autonomous technology and space exploration, embodying intelligence, innovation, and the infinite possibilities of flight.
+**Spaceborn** represents advanced autonomous security technology, embodying protection, intelligence, and reliability in security solutions.
 
 ## Color Palette
 
@@ -190,4 +190,4 @@ whileHover={{ scale: 1.05, y: -5 }}
 </motion.div>
 ```
 
-This style guide ensures consistency across the Spaceborn website while maintaining the futuristic, space-themed aesthetic that represents the brand's innovative approach to autonomous drone technology.
+This style guide ensures consistency across the Spaceborn website while maintaining the futuristic, space-themed aesthetic that represents the brand's innovative approach to autonomous security drone technology.

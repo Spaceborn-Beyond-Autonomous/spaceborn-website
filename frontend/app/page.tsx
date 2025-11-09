@@ -11,7 +11,7 @@ export default function Home() {
     <div className="min-h-screen bg-black">
       <GalaxyBackground />
       <Navigation />
-      <main>
+      <main className="pt-16">
         <HeroSection />
         <AboutSection />
         <ProductsSection />
