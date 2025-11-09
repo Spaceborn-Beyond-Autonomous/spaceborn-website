@@ -173,7 +173,7 @@ whileHover={{ scale: 1.05, y: -5 }}
   className="text-center mb-16"
 >
   <h2 className="text-4xl lg:text-6xl font-bold mb-6">
-    <span className="bg-gradient-to-r from-cosmic-purple to-cosmic-cyan bg-clip-text text-transparent">
+    <span className="bg-linear-to-r from-cosmic-purple to-cosmic-cyan bg-clip-text text-transparent">
       Section Title
     </span>
   </h2>
