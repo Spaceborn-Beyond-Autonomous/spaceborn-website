@@ -105,37 +105,38 @@ from datetime import datetime, timedelta
 
 
 
-@shared_task(ignore_result=False, name='daily_remainder')
-def send_daily_remainders():
-    now = datetime.utcnow()
-    in_24_hours = now + timedelta(hours=24)
+# @shared_task(ignore_result=False, name='daily_remainder')
+# def send_daily_remainders():
+#     now = datetime.utcnow()
+#     in_24_hours = now + timedelta(hours=24)
 
-    # Query all users (or adjust as per your use case)
-    users = User.query.all()
+#     # Query all users (or adjust as per your use case)
+#     users = User.query.all()
 
-    for user in users:
-        upcoming_appointments = Appoinment.query.filter_by(patient_id=user.id, status='booked').all()
-        for appt in upcoming_appointments:
-            # Parse the appointment slot time (assuming your slot_time field)
-            start_time_str = appt.slot.slots_time.split(" - ")[0]
-            slot_time = datetime.strptime(f"{appt.slot.date} {start_time_str}", "%Y-%m-%d %H:%M")
+#     for user in users:
+#         upcoming_appointments = Appoinment.query.filter_by(patient_id=user.id, status='booked').all()
+#         for appt in upcoming_appointments:
+#             # Parse the appointment slot time (assuming your slot_time field)
+#             start_time_str = appt.slot.slots_time.split(" - ")[0]
+#             slot_time = datetime.strptime(f"{appt.slot.date} {start_time_str}", "%Y-%m-%d %H:%M")
 
-            if now <= slot_time <= in_24_hours:
-                # Convert to string for serialization
-                slot_time_str = slot_time.strftime("%H:%M")
-                daily_remainder.delay(user.name, appt.doctor.name, slot_time_str, appt.slot.date)
+#             if now <= slot_time <= in_24_hours:
+#                 # Convert to string for serialization
+#                 slot_time_str = slot_time.strftime("%H:%M")
+#                 daily_remainder.delay(user.name, appt.doctor.name, slot_time_str, appt.slot.date)
                 
                 
 
 
 @shared_task(ignore_result=False, name="Daily remainder")
-def daily_remainder(username, doc_name, slot_time, date):
-    text = f"Hi {username}, your appointment with {doc_name} is scheduled at {slot_time} on {date}."
-    response=requests.post("https://chat.googleapis.com/v1/spaces/AAQAjfJGmSE/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=4lhzmTCGL4GtaHcZyPajPtoPwAs4sHCq8_-wDHB-CiA",
+def daily_remainder(self, email_id):
+    user=User.objects.filter(alternative_email_id=email_id)
+    text = f"Hi {user.fullname}, your account has been successfully created in Spaceborn, Here are your credentials for logging in, Email ID:{user.email_id} Password:{user.password}."
+    response=requests.post(user.alternative_email_id,
                            json = {"text": text})
     print(response.status_code)
     # print('Sending to:', url)
     print('Payload:', {"text": text})
     print('Response:', response.status_code, response.text)
 
-    return "The remainder is sent to the user."
+    return "Account details sent to the user."

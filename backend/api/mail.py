@@ -6,7 +6,7 @@ from email.mime.text import MIMEText
 
 SMTP_SERVER = "localhost"
 SMTP_PORT = 1025
-SENDER_EMAIL = "admin@hapcare.com"
+SENDER_EMAIL = "no_reply@spaceborn.in"
 SENDER_PASSWORD = ""
 
 def send_email(recipients, subject, body):
