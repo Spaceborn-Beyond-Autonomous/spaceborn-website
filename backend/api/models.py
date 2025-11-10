@@ -127,8 +127,6 @@ class Task(models.Model):
         return f"{self.title} ({self.status})"
 
 
-
-
 # -----------------------
 # REVENUE MODEL
 # -----------------------

@@ -10,7 +10,7 @@ from django.urls import re_path
 urlpatterns = [
     path('sb_admin/', admin.site.urls),
     path('api/', include('api.urls')),  # your backend API routes
-    path('', FrontendAppView.as_view(), name='home'),  # serve frontend
+    path('check/', check_backend),  # serve frontend
 ]
 
 # if settings.DEBUG:
