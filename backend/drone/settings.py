@@ -42,6 +42,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    'https://space-born.vercel.app/',
+    'https://www.spaceborn.in',
     "http://localhost:3000",  # Next.js dev server
     # Add your production frontend URL here
 ]

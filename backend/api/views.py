@@ -66,7 +66,7 @@ class LogoutView(APIView):
 #Admin functionalities
 
 class Admin_DashboardView(APIView):
-    permission_classes = [IsAdmin]  # Protect with JWT
+    permission_classes = [IsAdminOrCore]  # Protect with JWT
 
     def get(self, request):
         # Optionally, ensure only admins can access
