@@ -13,10 +13,10 @@ urlpatterns = [
     path('', FrontendAppView.as_view(), name='home'),  # serve frontend
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += [
-        re_path(r'^_next/(?P<path>.*)$', serve, {'document_root': settings.FRONTEND_DIR / '_next'}),
-        re_path(r'^(?P<path>.*\.(?:ico|png|jpg|jpeg|svg|webp))$', serve, {'document_root': settings.FRONTEND_DIR}),
-    ]
+# if settings.DEBUG:
+#     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+#     urlpatterns += [
+#         re_path(r'^_next/(?P<path>.*)$', serve, {'document_root': settings.FRONTEND_DIR / '_next'}),
+#         re_path(r'^(?P<path>.*\.(?:ico|png|jpg|jpeg|svg|webp))$', serve, {'document_root': settings.FRONTEND_DIR}),
+#     ]
