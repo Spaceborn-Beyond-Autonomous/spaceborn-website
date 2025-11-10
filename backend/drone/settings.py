@@ -48,10 +48,18 @@ CORS_ALLOWED_ORIGINS = [
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
+    'SIGNING_KEY': SECRET_KEY,   # ✅ use your Django SECRET_KEY for JWT signing
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_COOKIE': 'access_token',         # ✅ Cookie name for access token
+    'AUTH_COOKIE_REFRESH': 'refresh_token',# ✅ Cookie name for refresh token
+    'AUTH_COOKIE_SECURE': False,           # Set to True in production (HTTPS)
+    'AUTH_COOKIE_HTTP_ONLY': True,         # Prevent JavaScript access
+    'AUTH_COOKIE_PATH': '/',               # Cookie available site-wide
+    'AUTH_COOKIE_SAMESITE': 'Lax',
 }
 
 REST_FRAMEWORK = {

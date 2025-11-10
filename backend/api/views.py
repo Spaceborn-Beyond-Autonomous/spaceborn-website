@@ -6,9 +6,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate
 from .permissions import *
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 # class UsersView(generics.ListAPIView):
 #     permission_classes = [IsAuthenticated]
@@ -21,11 +22,46 @@ class LoginView(APIView):
         email = request.data.get('email')
         password = request.data.get('password')
 
-        user = authenticate(username=email, password=password)
-        if user is not None:
-            return Response({"message": "Login successful!"}, status=status.HTTP_200_OK)
-        else:
+        try:
+            user = User.objects.get(email_id=email)
+        except User.DoesNotExist:
             return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if not user.password == password:  # use check_password() if hashed
+            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        # ✅ Create JWT tokens
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        refresh_token = str(refresh)
+
+        # ✅ Set cookies
+        response = Response({
+            "message": "Login successful",
+            "access": access_token,
+            "refresh": refresh_token
+        }, status=status.HTTP_200_OK)
+
+        response.set_cookie(
+            key='access_token',
+            value=access_token,
+            httponly=True,
+            secure=True,   # Set True in production (HTTPS)
+            samesite='Lax'
+        )
+        response.set_cookie(
+            key='refresh_token', value=refresh_token,
+            httponly=True, secure=False, samesite='Lax')
+
+        return response
+    
+class LogoutView(APIView):
+    def post(self, request):
+        response = Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
+        response.delete_cookie('access_token')
+        response.delete_cookie('refresh_token')
+        return response
+
 
 #Admin functionalities
 
@@ -164,29 +200,12 @@ class Admin_UsersView(APIView):
         )
         
 class TaskView(APIView):
-    permission_classes =[IsAdmin, IsCore]
+    permission_classes =[IsAdminOrCore]
     
     def get(self, request): 
         
         tasks = Task.objects.all()
         serializer = TeamSerializer(tasks, many=True)
-        # for task in tasks:
-        #     users = User.objects.filter(team=team)
-        #     serializer = TeamSerializer(users, many=True)
-            
-        #     response_data.append({
-        #         "team": team.name,
-        #         "members": serializer.data
-        #     })
-
-        # Handle users who have no team (optional)
-        # no_team_users = User.objects.filter(team__isnull=True)
-        # if no_team_users.exists():
-        #     serializer = UsersSerializer(no_team_users, many=True)
-        #     response_data.append({
-        #         "team": "No Team Assigned",
-        #         "members": serializer.data
-        #     })
         return Response(serializer.data)
     
     def post(self, request):
@@ -255,37 +274,20 @@ class TaskView(APIView):
             
         
 class ProjectsView(APIView):
-    permission_classes =[IsAdmin, IsCore]
+    permission_classes =[IsAdminOrCore]
     
     def get(self, request): 
         
         tasks = Project.objects.all()
         serializer = ProjectSerializer(tasks, many=True)
-        # for task in tasks:
-        #     users = User.objects.filter(team=team)
-        #     serializer = TeamSerializer(users, many=True)
-            
-        #     response_data.append({
-        #         "team": team.name,
-        #         "members": serializer.data
-        #     })
-
-        # Handle users who have no team (optional)
-        # no_team_users = User.objects.filter(team__isnull=True)
-        # if no_team_users.exists():
-        #     serializer = UsersSerializer(no_team_users, many=True)
-        #     response_data.append({
-        #         "team": "No Team Assigned",
-        #         "members": serializer.data
-        #     })
         return Response(serializer.data)
     
     def post(self, request):
-        serializer = TaskSerializer(data=request.data)
+        serializer = ProjectSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(
-                {"message": "Task created successfully", "task": serializer.data},
+                {"message": "Project created successfully", "project": serializer.data},
                 status=status.HTTP_201_CREATED
             )
         return Response(
@@ -295,26 +297,26 @@ class ProjectsView(APIView):
 
     # ✅ PUT — Update an existing task (by ID)
     def put(self, request):
-        task_id = request.data.get('id')
-        if not task_id:
+        project_id = request.data.get('id')
+        if not project_id:
             return Response(
-                {"error": "Task ID is required for update."},
+                {"error": "Project ID is required for update."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         try:
-            task = Task.objects.get(id=task_id)
-        except Task.DoesNotExist:
+            task = Project.objects.get(id=project_id)
+        except  Project.DoesNotExist:
             return Response(
-                {"error": f"Task with ID {task_id} not found."},
+                {"error": f"Project with ID {project_id} not found."},
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = TaskSerializer(task, data=request.data, partial=True)
+        serializer = ProjectSerializer(task, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(
-                {"message": f"Task {task_id} updated successfully.", "task": serializer.data},
+                {"message": f"Project {project_id} updated successfully.", "project": serializer.data},
                 status=status.HTTP_200_OK
             )
         return Response(
@@ -324,23 +326,23 @@ class ProjectsView(APIView):
 
     # ✅ DELETE — Delete a task by ID
     def delete(self, request):
-        task_id = request.data.get('id')
-        if not task_id:
+        project_id = request.data.get('id')
+        if not project_id:
             return Response(
                 {"error": "Task ID is required for deletion."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         try:
-            task = Task.objects.get(id=task_id)
-            task.delete()
+            project = Project.objects.get(id=project_id)
+            project.delete()
             return Response(
-                {"message": f"Task {task_id} deleted successfully."},
+                {"message": f"Project {project_id} deleted successfully."},
                 status=status.HTTP_200_OK
             )
         except Task.DoesNotExist:
             return Response(
-                {"error": f"Task with ID {task_id} not found."},
+                {"error": f"Project with ID {project_id} not found."},
                 status=status.HTTP_404_NOT_FOUND
             )
         
