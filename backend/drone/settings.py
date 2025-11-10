@@ -15,7 +15,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+FRONTEND_DIR = BASE_DIR.parent / 'frontend' / 'out'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -61,13 +61,25 @@ CORS_ALLOWED_ORIGINS = [
 ]
 ROOT_URLCONF = 'drone.urls'
 
+
+REACT_APP_DIR = BASE_DIR.parent / 'frontend'  # adjust if needed
+
+# Add React build static files if they exist
+STATICFILES_DIRS = [
+    REACT_APP_DIR / 'out',     # for Next.js export
+    REACT_APP_DIR / 'build',   # for CRA/Vite
+]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            FRONTEND_DIR  # ✅ Next.js static export folder
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -124,8 +136,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    FRONTEND_DIR / '_next',   # Serve JS & CSS
+    FRONTEND_DIR / 'static',  # Serve other static assets
+    FRONTEND_DIR,             # Fallback for root assets like favicon, images
+]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
