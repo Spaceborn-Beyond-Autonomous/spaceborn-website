@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
 from .permissions import *
 from rest_framework_simplejwt.tokens import RefreshToken
-from .task import *
+from api.task import *
 
 # class UsersView(generics.ListAPIView):
 #     permission_classes = [IsAuthenticated]
@@ -124,9 +124,19 @@ class Admin_DashboardView(APIView):
                 "completed_tasks": completed_tasks
             })
             
+    def post(self, request):
         
+        if request.user.role == 'admin':
+            team = request.data.get('team')
+            members = Team.object.members
+            serializer = MeetingSerializer(data=request.data)
             
-        
+            if serializer.is_valid():
+                meeting = serializer.save(team=team)
+                meeting.members.set(team.members.all())
+                meeting.save()
+                
+                meeting_reminder.delay(meeting.id)
         
 class Admin_UsersView(APIView):
     permission_classes = [IsAdmin]

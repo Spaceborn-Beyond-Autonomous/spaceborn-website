@@ -138,3 +138,25 @@ class Revenue(models.Model):
 
     def __str__(self):
         return f"Revenue ({self.period})"
+
+class Meeting(models.Model):
+    title = models.CharField(max_length=100, null=False, blank=False)
+    start_time = models.TimeField(null=False, blank=False)
+    date = models.DateField(null=False, blank=False)
+
+    # Each meeting belongs to one team
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.CASCADE,        # if team is deleted, meeting is deleted too
+        related_name='meetings'
+    )
+
+    # Many users can attend one meeting
+    members = models.ManyToManyField(
+        User,
+        related_name='meetings_attended',
+        blank=True                       # allows empty members list initially
+    )
+
+    def __str__(self):
+        return f"{self.title} - {self.team.name} ({self.date})" 

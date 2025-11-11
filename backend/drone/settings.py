@@ -124,6 +124,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+# ✅ Gmail SMTP Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# Replace with your real Gmail credentials
+EMAIL_HOST_USER = 'adarshkumar@spaceborn.in'
+EMAIL_HOST_PASSWORD = 'your-app-password'  # NOT your Gmail password!
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 

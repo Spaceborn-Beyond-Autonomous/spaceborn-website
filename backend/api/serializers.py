@@ -84,3 +84,12 @@ class RevenueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Revenue
         fields = ['id', 'total', 'pending', 'completed', 'period']
+
+
+class MeetingSerializer(serializers.ModelSerializer):
+    team = serializers.StringRelatedField(many=True)       # shows team name instead of id
+    members = serializers.StringRelatedField(many=True)  # shows member names instead of ids
+
+    class Meta:
+        model = Meeting
+        fields = ['id', 'title', 'start_time', 'date', 'team', 'members']
