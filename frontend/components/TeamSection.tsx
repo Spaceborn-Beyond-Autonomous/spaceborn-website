@@ -69,7 +69,6 @@ export default function TeamSection() {
                 enableMobileTilt={false}
                 showUserInfo={true}
                 grainUrl='/images/grain.webp'
-                iconUrl='/images/iconpattern.png'
                 onContactClick={() => {
                   window.open(member.linkedin, '_blank', 'noopener,noreferrer');
                 }}

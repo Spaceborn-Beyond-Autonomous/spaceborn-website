@@ -45,7 +45,7 @@
   background: radial-gradient(circle at var(--pointer-x) var(--pointer-y),
       var(--behind-glow-color) 0%,
       transparent var(--behind-glow-size));
-  filter: blur(50px) saturate(1.1);
+  filter: blur(20px) saturate(1.1) !important;
   opacity: calc(0.8 * var(--card-opacity));
   transition: opacity 200ms ease;
 }
@@ -171,6 +171,33 @@
   opacity: 0;
   transition: opacity 0.8s ease;
 }
+
+.pc-shine,
+.pc-shine::before,
+.pc-shine::after {
+  mix-blend-mode: normal !important;
+  background-blend-mode: normal !important;
+}
+
+.pc-shine,
+.pc-shine::before,
+.pc-shine::after {
+  /* Remove rainbow holographic layers */
+  background: none !important;
+  background-color: transparent !important;
+  mix-blend-mode: normal !important;
+  filter: none !important;
+  animation: none !important;
+}
+
+/* Set neutral, dark overlay instead of color shine */
+.pc-shine::before {
+  background: rgba(0, 0, 0, 0.4) !important;
+  mix-blend-mode: overlay !important;
+  filter: brightness(0.6) contrast(1.2) !important;
+}
+
+
 
 .pc-card:hover .pc-shine,
 .pc-card.active .pc-shine {
