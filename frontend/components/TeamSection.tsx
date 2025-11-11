@@ -13,19 +13,19 @@ interface TeamMember {
 export default function TeamSection() {
   // TODO: Replace with API call
   const teamMembers: TeamMember[] = [
-    { name: 'Gourav Thakur', role: 'Core Team Member' },
-    { name: 'Rajdeep Mukherjee', role: 'Core Team Member' },
-    { name: 'Vipul Bhamare', role: 'Core Team Member' },
-    { name: 'Ayush Bhramar', role: 'Core Team Member' },
-    { name: 'Soubhagya Nayak', role: 'Core Team Member' },
-    { name: 'Hashim', role: 'Core Team Member' },
-    { name: 'Ashutosh Rao', role: 'Core Team Member' },
+    { name: 'Gourav Thakur', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/gourav-thakur-77a682389/', image: '/team/gourav.jpg' },
+    { name: 'Rajdeep Mukherjee', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/rajdeep-mukherjee-0a3b53318/', image: '/team/rajdeep.png' },
+    { name: 'Vipul Bhamare', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/vipul-bhamare-54579a384/', image: '/team/vipul.jpg' },
+    { name: 'Ayush Bhramar', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/ayush-bhramar-a75944390/', image: '/team/ayush.jpg' },
+    { name: 'Soubhagya Nayak', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/soubhagya-nayak-27b9b72a7/', image: '/team/soubhagya.jpg' },
+    { name: 'Hashim Mohamed', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/hashimmohamedta/', image: '/team/hashim.jpeg' },
+    { name: 'Ashutosh Rao', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/ashutosh-rao-282856272/', image: '/team/ashutosh.jpg' },
   ]
 
   return (
     <section id="team" className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-linear-to-b from-transparent via-gray-900/20 to-transparent" />
-      
+
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-6xl font-bold mb-4 text-glow">
@@ -38,7 +38,7 @@ export default function TeamSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {teamMembers.map((member) => (
-            <div 
+            <div
               key={member.name}
               className="hologram rounded-2xl p-6 hover:border-white/50 transition-all duration-300 group"
             >
@@ -58,16 +58,16 @@ export default function TeamSection() {
                   </div>
                 )}
               </div>
-              
+
               <h3 className="text-xl font-bold text-white mb-1 uppercase tracking-wide">
                 {member.name}
               </h3>
               <p className="text-sm text-white/60 mb-4 uppercase tracking-wider">
                 {member.role}
               </p>
-              
+
               {member.linkedin && (
-                <a 
+                <a
                   href={member.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
