@@ -30,8 +30,6 @@ export default function TeamSection() {
   rgba(35, 35, 35, 0.85) 100%
 )`;
 
-
-
   return (
     <section id="team" className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-linear-to-b from-transparent via-gray-900/20 to-transparent" />
@@ -46,10 +44,11 @@ export default function TeamSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 ">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 place-items-center">
           {teamMembers.map((member) => (
             <div
               key={member.name}
+              className="w-full flex justify-center"
             >
               <ProfileCard
                 key={member.name}
