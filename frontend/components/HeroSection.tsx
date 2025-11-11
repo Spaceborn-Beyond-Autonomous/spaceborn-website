@@ -81,14 +81,22 @@ export default function HeroSection() {
 
 
         {/* 3D Model */}
-        <div className="hidden lg:block lg:h-[600px] relative lg:top-5">
+        <div className="hidden pointer-events-none lg:block lg:h-[600px] relative lg:top-5">
           <div className="w-full h-full">
             <ModelViewer
               url="/models/low_poly_quadcopter_drone.glb"
               width={600}
               height={500}
               autoRotate
+              enableMouseParallax={false}
+              enableManualRotation={false}
+              enableHoverRotation={false}
+              enableManualZoom={false}
+              showScreenshotButton={false}
+              fadeIn={true}
+              environmentPreset='city'
             />
+
           </div>
         </div>
       </div>
