@@ -2,25 +2,35 @@
 
 import { Linkedin } from 'lucide-react'
 import Image from 'next/image'
+import ProfileCard from './ProfileCard/ProfileCard'
 
 interface TeamMember {
   name: string
   role: string
-  image?: string
-  linkedin?: string
+  image: string
+  linkedin: string
 }
 
 export default function TeamSection() {
   // TODO: Replace with API call
   const teamMembers: TeamMember[] = [
-    { name: 'Gourav Thakur', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/gourav-thakur-77a682389/', image: '/team/gourav.jpg' },
+    { name: 'Gourav Thakur', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/gourav-thakur-77a682389/', image: '/team/gourav.png' },
     { name: 'Rajdeep Mukherjee', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/rajdeep-mukherjee-0a3b53318/', image: '/team/rajdeep.png' },
-    { name: 'Vipul Bhamare', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/vipul-bhamare-54579a384/', image: '/team/vipul.jpg' },
-    { name: 'Ayush Bhramar', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/ayush-bhramar-a75944390/', image: '/team/ayush.jpg' },
-    { name: 'Soubhagya Nayak', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/soubhagya-nayak-27b9b72a7/', image: '/team/soubhagya.jpg' },
-    { name: 'Hashim Mohamed', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/hashimmohamedta/', image: '/team/hashim.jpeg' },
-    { name: 'Ashutosh Rao', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/ashutosh-rao-282856272/', image: '/team/ashutosh.jpg' },
+    { name: 'Vipul Bhamare', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/vipul-bhamare-54579a384/', image: '/team/vipul.png' },
+    { name: 'Ayush Bhramar', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/ayush-bhramar-a75944390/', image: '/team/ayush.png' },
+    { name: 'Soubhagya Nayak', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/soubhagya-nayak-27b9b72a7/', image: '/team/soubhagya.png' },
+    { name: 'Hashim Mohamed', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/hashimmohamedta/', image: '/team/hashim.png' },
+    { name: 'Ashutosh Rao', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/ashutosh-rao-282856272/', image: '/team/ashutosh.png' },
   ]
+
+  const innerGradient = `linear-gradient(
+  145deg,
+  rgba(10, 10, 10, 0.95) 0%,
+  rgba(25, 25, 25, 0.9) 40%,
+  rgba(35, 35, 35, 0.85) 100%
+)`;
+
+
 
   return (
     <section id="team" className="py-20 relative overflow-hidden">
@@ -36,46 +46,33 @@ export default function TeamSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 ">
           {teamMembers.map((member) => (
             <div
               key={member.name}
-              className="hologram rounded-2xl p-6 hover:border-white/50 transition-all duration-300 group"
             >
-              <div className="aspect-square hologram rounded-xl overflow-hidden mb-4 relative">
-                {member.image ? (
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-white/10 to-transparent">
-                    <span className="text-4xl font-bold text-white/30">
-                      {member.name.split(' ').map(n => n[0]).join('')}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              <h3 className="text-xl font-bold text-white mb-1 uppercase tracking-wide">
-                {member.name}
-              </h3>
-              <p className="text-sm text-white/60 mb-4 uppercase tracking-wider">
-                {member.role}
-              </p>
-
-              {member.linkedin && (
-                <a
-                  href={member.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex hologram rounded-lg p-2 hover:border-white/50 transition-all duration-300"
-                >
-                  <Linkedin className="h-4 w-4 text-white" />
-                </a>
-              )}
+              <ProfileCard
+                key={member.name}
+                className='group transition-all duration-300 hover:scale-[1.02]'
+                name={member.name}
+                title={member.role}
+                handle={member.name.toLowerCase().replace(/\s+/g, '')}
+                status=""
+                contactText="Contact Me"
+                avatarUrl={member.image}
+                miniAvatarUrl={member.image}
+                innerGradient={innerGradient}
+                behindGlowEnabled={false}
+                behindGlowColor="rgba(255, 255, 255, 0.08)"
+                behindGlowSize="5%"
+                enableTilt={true}
+                enableMobileTilt={false}
+                showUserInfo={true}
+                iconUrl='/images/iconpattern.png'
+                onContactClick={() => {
+                  window.open(member.linkedin, '_blank', 'noopener,noreferrer');
+                }}
+              />
             </div>
           ))}
         </div>
