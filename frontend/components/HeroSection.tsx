@@ -34,10 +34,12 @@ export default function HeroSection() {
   ]
 
   return (
+    // Hero Section
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
       <div className="absolute inset-0 cyber-grid opacity-30" />
       <div className="absolute inset-0 w-full h-1 bg-linear-to-r from-transparent via-white to-transparent opacity-20 scan-line" />
 
+      {/* Hero Text */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center py-8 lg:py-0">
         <div className="text-center lg:text-left">
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 text-glow leading-tight">
@@ -63,6 +65,8 @@ export default function HeroSection() {
             </Button>
           </div>
 
+
+          {/* Feature Icons */}
           <div className="flex justify-center lg:justify-start gap-4 sm:gap-6 lg:gap-8">
             {features.map((feature) => (
               <div key={feature.label} className="flex flex-col items-center gap-1.5 sm:gap-2">
@@ -75,6 +79,8 @@ export default function HeroSection() {
           </div>
         </div>
 
+
+        {/* 3D Model */}
         <div className="hidden lg:block lg:h-[600px] relative lg:top-5">
           <div className="w-full h-full">
             <ModelViewer
@@ -87,7 +93,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2">
+      <div className="hidden md:absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2">
         <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
           <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-bounce" />
         </div>
