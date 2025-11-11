@@ -13,12 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Spaceborn - Autonomous Flight Redefined",
+  title: "Spaceborn - Beyond Autonomous",
   description:
     "Pioneering the future of autonomous drones with AI-powered intelligence, exploring the cosmos of possibilities in every flight.",
   keywords:
-    "autonomous drones, AI, space exploration, drone technology, intelligent flight systems",
-  authors: [{ name: "Spaceborn Technologies" }],
+    "autonomous drones, AI, space exploration, drone technology, intelligent flight systems, robotics, unmanned aerial vehicles, drone innovation, spaceborn technologies,spaceborn",
+  authors: [{ name: "Spaceborn - Beyond Autonomous" }],
 };
 
 export const viewport: Viewport = {
