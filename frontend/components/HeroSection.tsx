@@ -2,52 +2,26 @@
 
 import { useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Sphere, MeshDistortMaterial } from '@react-three/drei'
+import { OrbitControls, useGLTF } from '@react-three/drei'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Zap, Cpu, Satellite } from 'lucide-react'
 import * as THREE from 'three'
+import ModelViewer from './ModelViewer'
 
 function FloatingDrone() {
   const meshRef = useRef<THREE.Group>(null!)
-  const propellerRefs = useRef<THREE.Mesh[]>([])
-  
+  const { scene } = useGLTF('/low_poly_quadcopter_drone.glb')
+
   useFrame((state) => {
     if (meshRef.current) {
       meshRef.current.rotation.y = state.clock.elapsedTime * 0.5
       meshRef.current.position.y = Math.sin(state.clock.elapsedTime) * 0.3
     }
-    propellerRefs.current.forEach((ref) => {
-      if (ref) ref.rotation.y = state.clock.elapsedTime * 10
-    })
   })
 
   return (
     <group ref={meshRef}>
-      <Sphere args={[1, 32, 32]} scale={1.5}>
-        <MeshDistortMaterial
-          color="#FFFFFF"
-          attach="material"
-          distort={0.3}
-          speed={2}
-          roughness={0.4}
-          metalness={0.8}
-        />
-      </Sphere>
-      {[0, 1, 2, 3].map((i) => (
-        <group key={i} rotation={[0, (i * Math.PI) / 2, 0]}>
-          <mesh position={[2, 0.5, 0]}>
-            <cylinderGeometry args={[0.1, 0.1, 0.2]} />
-            <meshStandardMaterial color="#FFFFFF" />
-          </mesh>
-          <mesh 
-            ref={(el) => { if (el) propellerRefs.current[i] = el }}
-            position={[2, 0.7, 0]}
-          >
-            <boxGeometry args={[1, 0.05, 0.1]} />
-            <meshStandardMaterial color="#FFFFFF" />
-          </mesh>
-        </group>
-      ))}
+      <primitive object={scene} scale={6} />
     </group>
   )
 }
@@ -63,7 +37,7 @@ export default function HeroSection() {
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
       <div className="absolute inset-0 cyber-grid opacity-30" />
       <div className="absolute inset-0 w-full h-1 bg-linear-to-r from-transparent via-white to-transparent opacity-20 scan-line" />
-      
+
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
         <div className="text-center lg:text-left">
           <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-glow">
@@ -75,7 +49,7 @@ export default function HeroSection() {
           </h1>
 
           <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto lg:mx-0">
-            Advanced autonomous security drones with AI-powered intelligence, 
+            Advanced autonomous security drones with AI-powered intelligence,
             protecting what matters most with precision and reliability.
           </p>
 
@@ -101,14 +75,13 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="h-96 lg:h-[500px]">
-          <Canvas camera={{ position: [0, 0, 5] }}>
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} intensity={1} />
-            <pointLight position={[-10, -10, -10]} intensity={0.5} color="#FFFFFF" />
-            <FloatingDrone />
-            <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
-          </Canvas>
+        <div className="h-100 relative top-5 lg:h-[600px]">
+          <ModelViewer
+            url="/low_poly_quadcopter_drone.glb"
+            width={600}
+            height={500}
+            autoRotate
+          />
         </div>
       </div>
 
