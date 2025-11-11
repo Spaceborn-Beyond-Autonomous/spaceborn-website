@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Rocket, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -22,13 +23,12 @@ export default function Navigation() {
   ]
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-black/80 backdrop-blur-md border-b border-white/10' : 'bg-transparent'
-    }`}>
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-black/80 backdrop-blur-md border-b border-white/10' : 'bg-transparent'
+      }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-2">
-            <Rocket className="h-8 w-8 text-white" />
+            <Image src="/images/logo.png" alt="Spaceborn Logo" width={40} height={40} />
             <span className="text-2xl font-bold text-white tracking-widest text-glow">SPACEBORN</span>
           </div>
 

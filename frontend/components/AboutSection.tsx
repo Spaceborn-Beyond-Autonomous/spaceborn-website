@@ -1,6 +1,7 @@
 'use client'
 
 import { Rocket, Brain, Globe, Zap } from 'lucide-react'
+import Image from 'next/image'
 
 export default function AboutSection() {
   const features = [
@@ -35,15 +36,15 @@ export default function AboutSection() {
   return (
     <section id="about" className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-linear-to-b from-transparent via-gray-900/20 to-transparent" />
-      
+
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-6xl font-bold mb-6 text-glow">
             <span className="text-white tracking-wider">SECURITY FIRST</span>
           </h2>
           <p className="text-xl text-white/80 max-w-3xl mx-auto">
-            At Spaceborn, we're not just building drones—we're crafting the future of autonomous security. 
-            Our mission is to protect what matters most, creating intelligent security systems 
+            At Spaceborn, we're not just building drones—we're crafting the future of autonomous security.
+            Our mission is to protect what matters most, creating intelligent security systems
             that provide unmatched surveillance and threat response capabilities.
           </p>
         </div>
@@ -68,16 +69,16 @@ export default function AboutSection() {
               Our Vision for Security
             </h3>
             <p className="text-white/80 mb-6">
-              We envision a future where autonomous security drones seamlessly integrate with existing security infrastructure, 
-              providing comprehensive protection for facilities, borders, events, and critical assets 
+              We envision a future where autonomous security drones seamlessly integrate with existing security infrastructure,
+              providing comprehensive protection for facilities, borders, events, and critical assets
               with unprecedented precision and reliability.
             </p>
             <p className="text-white/80 mb-8">
-              Every Spaceborn security drone is equipped with advanced AI, enabling real-time threat assessment 
-              and autonomous response capabilities. Our technology doesn't just monitor—it analyzes, 
+              Every Spaceborn security drone is equipped with advanced AI, enabling real-time threat assessment
+              and autonomous response capabilities. Our technology doesn't just monitor—it analyzes,
               predicts, and responds intelligently to security challenges.
             </p>
-            
+
             <div className="grid grid-cols-3 gap-6">
               {stats.map((stat) => (
                 <div key={stat.label} className="text-center">
@@ -91,9 +92,13 @@ export default function AboutSection() {
           <div className="relative">
             <div className="aspect-square hologram rounded-3xl flex items-center justify-center relative overflow-hidden">
               <div className="absolute inset-0 cyber-grid opacity-20" />
-              <div className="w-32 h-32 bg-white rounded-full animate-pulse-slow flex items-center justify-center relative z-10">
-                <Rocket className="h-16 w-16 text-black animate-float" />
-              </div>
+              <Image
+                src="/images/drone.png"
+                alt="Security Drone"
+                width={600}
+                height={600}
+                className="relative z-10 object-fit"
+              />
             </div>
             <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full animate-spin-slow" />
             <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-gray-500/20 rounded-full animate-pulse" />
