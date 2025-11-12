@@ -143,6 +143,7 @@ class Meeting(models.Model):
     title = models.CharField(max_length=100, null=False, blank=False)
     start_time = models.TimeField(null=False, blank=False)
     date = models.DateField(null=False, blank=False)
+    link = models.CharField(null=False, blank=False)
 
     # Each meeting belongs to one team
     team = models.ForeignKey(

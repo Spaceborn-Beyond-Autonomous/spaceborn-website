@@ -128,7 +128,7 @@ class Admin_DashboardView(APIView):
         
         if request.user.role == 'admin':
             team = request.data.get('team')
-            members = Team.object.members
+            
             serializer = MeetingSerializer(data=request.data)
             
             if serializer.is_valid():
@@ -137,6 +137,44 @@ class Admin_DashboardView(APIView):
                 meeting.save()
                 
                 meeting_reminder.delay(meeting.id)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response({"error": "Access Denied"}, status=status.HTTP_403_FORBIDDEN)
+    
+    def put(self, request):
+        meeting_id = request.data.get('id')
+        if not meeting_id:
+            return Response(
+                {"error": "Meeting ID is required for update."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            task = Meeting.objects.get(id=meeting_id)
+        except Meeting.DoesNotExist:
+            return Response(
+                {"error": f"Meeting with ID {meeting_id} not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = MeetingSerializer(task, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            
+            meeting_reminder.delay(meeting_id)
+            return Response(
+                {"message": f"Task {meeting_id} updated successfully.", "task": serializer.data},
+                status=status.HTTP_200_OK
+            )
+            
+        return Response(
+            {"errors": serializer.errors},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+            
+
         
 class Admin_UsersView(APIView):
     permission_classes = [IsAdmin]

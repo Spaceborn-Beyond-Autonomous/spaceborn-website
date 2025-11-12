@@ -62,7 +62,8 @@ def meeting_reminder(meeting_id):
             <p><b>Meeting Details:</b><br>
             Title: {meeting.title}<br>
             Date: {meeting.date}<br>
-            Time: {meeting.start_time}</p>
+            Time: {meeting.start_time}
+            Link: {meeting.link}</p>
             <p>Please join on time.</p>
             <br><p>Best Regards,<br>Spaceborn Admin Team</p>
             """
