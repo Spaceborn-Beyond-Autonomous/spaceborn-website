@@ -150,94 +150,100 @@ class Admin_DashboardView(APIView):
         return Response({"error": "Access Denied"}, status=status.HTTP_403_FORBIDDEN)
     
     def put(self, request):
-        meeting_id = request.data.get('id')
-        if not meeting_id:
+        
+        if request.user.role=='admin':
+        
+            meeting_id = request.data.get('id')
+            if not meeting_id:
+                return Response(
+                    {"error": "Meeting ID is required for update."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            try:
+                meeting = Meeting.objects.get(id=meeting_id)
+            except Meeting.DoesNotExist:
+                return Response(
+                    {"error": f"Meeting with ID {meeting_id} not found."},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            serializer = MeetingSerializer(meeting, data=request.data, partial=True)
+
+            # Get new additional members list (IDs)
+            additional_members = request.data.get('additional_members', [])
+
+            if serializer.is_valid():
+                updated_meeting = serializer.save()
+
+                # Handle updated team
+                team = updated_meeting.team
+                current_team_members = set(team.members.all())
+                current_meeting_members = set(meeting.members.all())
+
+                # Fetch new additional members
+                new_additional_users = set(User.objects.filter(id__in=additional_members))
+                new_total_members = current_team_members.union(new_additional_users)
+
+                # Find added and removed users
+                added_members = new_total_members - current_meeting_members
+                removed_members = current_meeting_members - new_total_members
+
+                # ✅ Update meeting membership
+                meeting.members.set(new_total_members)
+                meeting.save()
+
+                # ✅ Update assigned_meetings counts
+                for user in added_members:
+                    user.assigned_meetings = (user.assigned_meetings or 0) + 1
+                    user.save()
+
+                for user in removed_members:
+                    if user.assigned_meetings and user.assigned_meetings > 0:
+                        user.assigned_meetings -= 1
+                        user.save()
+
+                # ✅ Resend reminders to the updated group
+                meeting_reminder.delay(meeting.id)
+
+                return Response(
+                    {
+                        "message": f"Meeting {meeting_id} updated successfully.",
+                        "added_members": [u.full_name for u in added_members],
+                        "removed_members": [u.full_name for u in removed_members],
+                        "meeting": serializer.data
+                    },
+                    status=status.HTTP_200_OK
+                )
+
             return Response(
-                {"error": "Meeting ID is required for update."},
+                {"errors": serializer.errors},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        try:
-            meeting = Meeting.objects.get(id=meeting_id)
-        except Meeting.DoesNotExist:
-            return Response(
-                {"error": f"Meeting with ID {meeting_id} not found."},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-        serializer = MeetingSerializer(meeting, data=request.data, partial=True)
-
-        # Get new additional members list (IDs)
-        additional_members = request.data.get('additional_members', [])
-
-        if serializer.is_valid():
-            updated_meeting = serializer.save()
-
-            # Handle updated team
-            team = updated_meeting.team
-            current_team_members = set(team.members.all())
-            current_meeting_members = set(meeting.members.all())
-
-            # Fetch new additional members
-            new_additional_users = set(User.objects.filter(id__in=additional_members))
-            new_total_members = current_team_members.union(new_additional_users)
-
-            # Find added and removed users
-            added_members = new_total_members - current_meeting_members
-            removed_members = current_meeting_members - new_total_members
-
-            # ✅ Update meeting membership
-            meeting.members.set(new_total_members)
-            meeting.save()
-
-            # ✅ Update assigned_meetings counts
-            for user in added_members:
-                user.assigned_meetings = (user.assigned_meetings or 0) + 1
-                user.save()
-
-            for user in removed_members:
-                if user.assigned_meetings and user.assigned_meetings > 0:
-                    user.assigned_meetings -= 1
-                    user.save()
-
-            # ✅ Resend reminders to the updated group
-            meeting_reminder.delay(meeting.id)
-
-            return Response(
-                {
-                    "message": f"Meeting {meeting_id} updated successfully.",
-                    "added_members": [u.full_name for u in added_members],
-                    "removed_members": [u.full_name for u in removed_members],
-                    "meeting": serializer.data
-                },
-                status=status.HTTP_200_OK
-            )
-
-        return Response(
-            {"errors": serializer.errors},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
         
     def delete(self, request):
-        meeting_id = request.data.get('id')
-        if not meeting_id:
-            return Response({"error": "Meeting ID is required for deletion."}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            meeting = Meeting.objects.get(id=meeting_id)
-        except Meeting.DoesNotExist:
-            return Response({"error": f"Meeting with ID {meeting_id} not found."}, status=status.HTTP_404_NOT_FOUND)
-
-        # Decrement assigned_meetings count for members
-        for member in meeting.members.all():
-            if member.assigned_meetings and member.assigned_meetings > 0:
-                member.assigned_meetings -= 1
-                member.save()
-
-        meeting.delete()
-        return Response({"message": f"Meeting {meeting_id} deleted successfully."}, status=status.HTTP_200_OK)
+        
+        if request.user.role=='admin':
             
+            meeting_id = request.data.get('id')
+            if not meeting_id:
+                return Response({"error": "Meeting ID is required for deletion."}, status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                meeting = Meeting.objects.get(id=meeting_id)
+            except Meeting.DoesNotExist:
+                return Response({"error": f"Meeting with ID {meeting_id} not found."}, status=status.HTTP_404_NOT_FOUND)
+
+            # Decrement assigned_meetings count for members
+            for member in meeting.members.all():
+                if member.assigned_meetings and member.assigned_meetings > 0:
+                    member.assigned_meetings -= 1
+                    member.save()
+
+            meeting.delete()
+            return Response({"message": f"Meeting {meeting_id} deleted successfully."}, status=status.HTTP_200_OK)
+                
 
         
 class Admin_UsersView(APIView):
