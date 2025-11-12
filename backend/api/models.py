@@ -12,8 +12,8 @@ class Team(models.Model):
     members = models.ManyToManyField(
         'User',                # reference to the User model
         related_name='teams',  # allows user.teams.all()
-        blank=True,
-        null=True
+        blank=True
+        # null=True
     )
 
     def __str__(self):
@@ -166,9 +166,9 @@ class Meeting(models.Model):
     
     additional_members = models.ManyToManyField(
         User,
-        related_name='meetings_attended',
-        blank=True,
-        null=True# allows empty members list initially
+        related_name='extra_meetings_attended',
+        blank=True
+        # null=True# allows empty members list initially
     )
 
     def __str__(self):
