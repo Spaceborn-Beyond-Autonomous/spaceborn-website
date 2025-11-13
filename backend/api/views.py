@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate
 from .permissions import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from api.task import *
+from datetime import date
 
 # class UsersView(generics.ListAPIView):
 #     permission_classes = [IsAuthenticated]
@@ -244,7 +245,36 @@ class Admin_DashboardView(APIView):
             meeting.delete()
             return Response({"message": f"Meeting {meeting_id} deleted successfully."}, status=status.HTTP_200_OK)
                 
+class MeetingView(APIView):
+    permission_classes = [IsAdmin]
+    
+    def get(self, request):
+        """Return all upcoming and ongoing meetings with members."""
+        today = date.today()
+        meetings = Meeting.objects.filter(date__gte=today).order_by('date', 'start_time')
+        serializer = MeetingSerializer(meetings, many=True)
+        return Response(serializer.data)
 
+    def post(self, request):
+        """Mark attendance for a user in a meeting."""
+        meeting_id = request.data.get('id')
+        email = request.data.get('email_id')
+
+        if not meeting_id or not email:
+            return Response({"error": "meeting_id and email_id required"}, status=400)
+
+        try:
+            meeting = Meeting.objects.get(id=meeting_id)
+            user = User.objects.get(email_id=email)
+        except (Meeting.DoesNotExist, User.DoesNotExist):
+            return Response({"error": "Invalid meeting or user"}, status=404)
+
+        # Increment joined_meetings count
+        user.joined_meetings += 1
+        user.save()
+
+        return Response({"message": f"Attendance marked for {user.full_name}"})
+        
         
 class Admin_UsersView(APIView):
     permission_classes = [IsAdmin]
