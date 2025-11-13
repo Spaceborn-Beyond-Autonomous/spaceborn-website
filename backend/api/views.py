@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import *
+from .models import User, Team, Project, Task, Meeting, Revenue
 from rest_framework import generics, status
 from .serializers import *
 from rest_framework.views import APIView
@@ -11,6 +11,7 @@ from .permissions import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from api.task import *
 from datetime import date
+from django.db.models import Sum
 
 # class UsersView(generics.ListAPIView):
 #     permission_classes = [IsAuthenticated]
@@ -28,31 +29,20 @@ class LoginView(APIView):
         except User.DoesNotExist:
             return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
-        if not user.password == password:  # use check_password() if hashed
+        if not user.check_password(password):
             return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
         # ✅ Create JWT tokens
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
-        refresh_token = str(refresh)
 
         # ✅ Set cookies
         response = Response({
             "message": "Login successful",
             "access": access_token,
-            "refresh": refresh_token
+            "refresh": str(refresh),
+            "user_role": user.role
         }, status=status.HTTP_200_OK)
-
-        response.set_cookie(
-            key='access_token',
-            value=access_token,
-            httponly=True,
-            secure=True,   # Set True in production (HTTPS)
-            samesite='Lax'
-        )
-        response.set_cookie(
-            key='refresh_token', value=refresh_token,
-            httponly=True, secure=False, samesite='Lax')
 
         return response
     
@@ -67,7 +57,7 @@ class LogoutView(APIView):
 #Admin functionalities
 
 class Admin_DashboardView(APIView):
-    permission_classes = [IsAdminOrCore,IsEmployee]  # Protect with JWT
+    permission_classes = [IsAuthenticated]  # Protect with JWT
 
     def get(self, request):
         # Optionally, ensure only admins can access
@@ -79,12 +69,10 @@ class Admin_DashboardView(APIView):
             total_teams = Team.objects.count()
             total_tasks = Task.objects.count()
             completed_tasks = Task.objects.filter(status='Completed').count()
-            revenue = Revenue.objects.all()
+            # revenue = Revenue.objects.all()
 
-            total_revenue=0
+            total_revenue = Revenue.objects.aggregate(Sum('total'))['total__sum'] or 0
             
-            for i in revenue:
-                total_revenue+=i.total
                 
             return Response({
                 "admin": request.user.full_name,
@@ -244,16 +232,154 @@ class Admin_DashboardView(APIView):
 
             meeting.delete()
             return Response({"message": f"Meeting {meeting_id} deleted successfully."}, status=status.HTTP_200_OK)
+        
+        
                 
 class MeetingView(APIView):
     permission_classes = [IsAdmin]
-    
+
+    # -------------------- GET: Fetch Meetings --------------------
     def get(self, request):
         """Return all upcoming and ongoing meetings with members."""
         today = date.today()
         meetings = Meeting.objects.filter(date__gte=today).order_by('date', 'start_time')
         serializer = MeetingSerializer(meetings, many=True)
         return Response(serializer.data)
+
+
+    # -------------------- POST: Create Meeting (Dashboard) --------------------
+    def post(self, request):
+        """Create a meeting from Dashboard (Admin only)."""
+
+        if request.user.role == 'admin':
+
+            team = request.data.get('team')
+            serializer = MeetingSerializer(data=request.data)
+
+            additional_members = request.data.get('additional_members', [])
+
+            if serializer.is_valid():
+                meeting = serializer.save(team=team)
+
+                # Default team members
+                all_members = list(team.members.all())
+
+                # Additional members from emails
+                extra_users = User.objects.filter(email_id__in=additional_members)
+
+                # Set meeting members
+                meeting.members.set(all_members + list(extra_users))
+                meeting.save()
+
+                # Send reminders
+                meeting_reminder.delay(meeting.id)
+
+                # Update assigned_meetings count
+                for user in meeting.members.all():
+                    user.assigned_meetings = (user.assigned_meetings or 0) + 1
+                    user.save()
+
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"error": "Access Denied"}, status=status.HTTP_403_FORBIDDEN)
+
+
+    # -------------------- PUT: Update Meeting --------------------
+    def put(self, request):
+
+        if request.user.role == 'admin':
+
+            meeting_id = request.data.get('id')
+            if not meeting_id:
+                return Response({"error": "Meeting ID is required for update."},
+                                status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                meeting = Meeting.objects.get(id=meeting_id)
+            except Meeting.DoesNotExist:
+                return Response({"error": f"Meeting with ID {meeting_id} not found."},
+                                status=status.HTTP_404_NOT_FOUND)
+
+            serializer = MeetingSerializer(meeting, data=request.data, partial=True)
+
+            additional_members = request.data.get('additional_members', [])
+
+            if serializer.is_valid():
+                updated_meeting = serializer.save()
+
+                team = updated_meeting.team
+                current_team_members = set(team.members.all())
+                current_meeting_members = set(meeting.members.all())
+
+                new_additional_users = set(User.objects.filter(id__in=additional_members))
+
+                new_total_members = current_team_members.union(new_additional_users)
+
+                added_members = new_total_members - current_meeting_members
+                removed_members = current_meeting_members - new_total_members
+
+                meeting.members.set(new_total_members)
+                meeting.save()
+
+                # Update assigned_meetings
+                for user in added_members:
+                    user.assigned_meetings = (user.assigned_meetings or 0) + 1
+                    user.save()
+
+                for user in removed_members:
+                    if user.assigned_meetings and user.assigned_meetings > 0:
+                        user.assigned_meetings -= 1
+                        user.save()
+
+                # Send updated reminders
+                meeting_reminder.delay(meeting.id)
+
+                return Response(
+                    {
+                        "message": f"Meeting {meeting_id} updated successfully.",
+                        "added_members": [u.full_name for u in added_members],
+                        "removed_members": [u.full_name for u in removed_members],
+                        "meeting": serializer.data
+                    }, status=status.HTTP_200_OK
+                )
+
+            return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    # -------------------- DELETE: Delete Meeting --------------------
+    def delete(self, request):
+
+        if request.user.role == 'admin':
+
+            meeting_id = request.data.get('id')
+            if not meeting_id:
+                return Response({"error": "Meeting ID is required for deletion."},
+                                status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                meeting = Meeting.objects.get(id=meeting_id)
+            except Meeting.DoesNotExist:
+                return Response({"error": f"Meeting with ID {meeting_id} not found."},
+                                status=status.HTTP_404_NOT_FOUND)
+
+            # Decrement assigned_meetings
+            for member in meeting.members.all():
+                if member.assigned_meetings and member.assigned_meetings > 0:
+                    member.assigned_meetings -= 1
+                    member.save()
+
+            meeting.delete()
+
+            return Response(
+                {"message": f"Meeting {meeting_id} deleted successfully."},
+                status=status.HTTP_200_OK
+            )
+
+
+# -------------------- SEPARATE ENDPOINT FOR ATTENDANCE --------------------
+class MeetingAttendanceView(APIView):
 
     def post(self, request):
         """Mark attendance for a user in a meeting."""
@@ -269,13 +395,13 @@ class MeetingView(APIView):
         except (Meeting.DoesNotExist, User.DoesNotExist):
             return Response({"error": "Invalid meeting or user"}, status=404)
 
-        # Increment joined_meetings count
         user.joined_meetings += 1
         user.save()
 
         return Response({"message": f"Attendance marked for {user.full_name}"})
-        
-        
+
+
+
 class Admin_UsersView(APIView):
     permission_classes = [IsAdmin]
 
@@ -391,6 +517,7 @@ class Admin_UsersView(APIView):
             status=status.HTTP_200_OK
         )
         
+
 class TaskView(APIView):
     permission_classes =[IsAdminOrCore]
     

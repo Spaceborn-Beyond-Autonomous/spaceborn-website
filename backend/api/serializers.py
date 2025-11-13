@@ -1,15 +1,17 @@
 from rest_framework import serializers
-from .models import *
+from .models import User, Team, Project, Task, Revenue, Meeting
 
 
 # 2️⃣ --- User Serializer ---
 class UserSerializer(serializers.ModelSerializer):
     team = serializers.StringRelatedField(read_only=True)  # Show team name instead of team ID
     tasks_assigned = serializers.StringRelatedField(many=True, read_only=True)  # Tasks assigned to the user
-
+    password = serializers.CharField(write_only=True, min_length=8, style={'input_type': 'password'})
+    
     class Meta:
         model = User
         fields = [
+            'id',
             'full_name',
             'email_id',
             'password',
@@ -29,7 +31,8 @@ class UserSerializer(serializers.ModelSerializer):
             'joined_meetings'
         ]
         extra_kwargs = {
-            'password': {'write_only': True}  # don't expose passwords
+            'password': {'write_only': True},  # don't expose passwords
+             'email': {'required': True}
         }
 
 
@@ -46,6 +49,7 @@ class TaskSerializer(serializers.ModelSerializer):
             'title',
             'status',
             'deadline',
+            'created_at',
             'assigned_to',
             'project'
         ]
@@ -53,20 +57,20 @@ class TaskSerializer(serializers.ModelSerializer):
 # 4️⃣ --- Project Serializer (Updated for combined model) ---
 class ProjectSerializer(serializers.ModelSerializer):
     # Display related fields clearly
-    team = serializers.StringRelatedField(read_only=True)
-    members = serializers.StringRelatedField(many=True, read_only=True)
+    team_detail = serializers.StringRelatedField(source='team', read_only=True)
+    members_detail = serializers.StringRelatedField(source='members', many=True, read_only=True)
     tasks = TaskSerializer(many=True, read_only=True)
-
+    
+    # ✅ For writing: accept IDs
+    team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), required=False, allow_null=True)
+    members = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True, required=False)
     class Meta:
         model = Project
         fields = [
-            'id',
-            'name',
-            'description',
-            'status',
-            'team',
-            'members',
-            'tasks'
+            'id', 'name', 'description', 'status', 'created_at'
+            'team', 'team_detail',           # ✅ Both ID and name
+            'members', 'members_detail',     # ✅ Both IDs and names
+            'tasks', 'created_at', 'updated_at'
         ]
 
 
@@ -78,14 +82,14 @@ class TeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Team
-        fields = ['id', 'code', 'name', 'members', 'projects']
+        fields = ['id', 'code', 'name', 'team_members', 'projects']
 
 
 # 7️⃣ --- Revenue Serializer ---
 class RevenueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Revenue
-        fields = ['id', 'total', 'pending', 'completed', 'period']
+        fields = ['id', 'total', 'pending', 'completed', 'period', 'created_at']
 
 
 class MeetingSerializer(serializers.ModelSerializer):
@@ -94,4 +98,4 @@ class MeetingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meeting
-        fields = ['id', 'title', 'start_time', 'date', 'link', 'team', 'members', 'additional_members']
+        fields = ['id', 'title', 'start_time', 'date', 'link', 'created_at', 'team', 'members', 'additional_members']
