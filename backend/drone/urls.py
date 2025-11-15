@@ -7,6 +7,9 @@ from django.views.static import serve
 from django.urls import re_path
 
 
+
+
+
 urlpatterns = [
     path('sb_admin/', admin.site.urls),
     path('api/', include('api.urls')),  # your backend API routes

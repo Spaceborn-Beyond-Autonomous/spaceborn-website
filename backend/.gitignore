@@ -1,0 +1,77 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.env/  # 🧠 Hide your environment variables file!
+
+# Django stuff
+*.log
+*.pot
+*.pyc
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+static_root/
+local_settings.py
+
+# VSCode / PyCharm / Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Celery / Redis
+celerybeat-schedule
+celerybeat.pid
+
+# Coverage / Testing
+htmlcov/
+.tox/
+.nox/
+.coverage
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+secrets.json
+
+# Migrations (optional, if you auto-generate them)
+# Uncomment the line below if you want to ignore migration files
+# */migrations/
+
+# Jupyter / notebooks
+.ipynb_checkpoints
+
+# Compiled frontend files (if applicable)
+node_modules/
+package-lock.json
+yarn.lock
