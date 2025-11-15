@@ -40,7 +40,7 @@ class User(AbstractUser):
     
     full_name = models.CharField(max_length=255, null=False, blank=False)
     
-    password = models.CharField(max_length=128, null=False, blank=False)
+    # password = models.CharField(max_length=128, null=False, blank=False)
     alternative_email_id = models.EmailField(unique=True, null=False, blank=False)
     age = models.PositiveIntegerField(null=False, blank=False)
     position = models.CharField(max_length=50, null=True, blank=True)
@@ -78,12 +78,6 @@ class User(AbstractUser):
     def __str__(self):
         return self.full_name
     
-    def save(self, *args, **kwargs):
-    # Hash password if not already hashed before saving
-        if self.pk is None or 'password' in self.get_dirty_fields():
-            self.password = make_password(self.password)
-        super().save(*args, **kwargs)
-
 
 # -----------------------
 # PROJECT MODEL (COMBINED)
@@ -99,7 +93,7 @@ class Project(models.Model):
     description = models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     # Optional: assign project to a team
     team = models.ForeignKey(
         Team,
