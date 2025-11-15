@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 # ✅ 1. Send Account Credentials
-@shared_task(bind=True, max_retries=3, name="send_account_credentials")
+@shared_task(bind=True, max_retries=3, name="send_account_credentials", rate_limit='100/h')
 def send_account_credentials(self, email):
     """Send password reset link instead of actual password"""
     try:
