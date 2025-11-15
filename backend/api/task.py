@@ -10,8 +10,8 @@ logger = logging.getLogger(__name__)
 
 
 # ✅ 1. Send Account Credentials
-@shared_task(bind=True, max_retries=3, name="send_account_credentials", ignore_result=True)
-def account_credentials(self, email):
+@shared_task(bind=True, max_retries=3, name="send_account_credentials")
+def send_account_credentials(self, email):
     """Send password reset link instead of actual password"""
     try:
         user = User.objects.get(alternative_email_id=email)  # ✅ Use primary email field
