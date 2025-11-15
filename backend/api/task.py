@@ -2,6 +2,7 @@ from celery import shared_task
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from .models import User, Team, Task, Meeting
+from django.core.mail import send_mass_mail
 import logging
 
 
@@ -55,8 +56,6 @@ def account_credentials(self, email):
 
 
 # ✅ 2. Send Meeting Reminder
-from django.core.mail import send_mass_mail
-
 @shared_task(name="send_meeting_reminder")
 def meeting_reminder(meeting_id):
     try:

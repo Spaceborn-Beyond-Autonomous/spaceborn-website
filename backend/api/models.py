@@ -172,6 +172,7 @@ class Meeting(models.Model):
     # Each meeting belongs to one team
     team = models.ForeignKey(
         Team,
+        on_delete=models.CASCADE,
         related_name='meetings'
     )
 
@@ -179,12 +180,14 @@ class Meeting(models.Model):
     members = models.ManyToManyField(
         User,
         related_name='meetings_attended',
+        # on_delete=models.CASCADE,
         blank=True                       # allows empty members list initially
     )
     
     additional_members = models.ManyToManyField(
         User,
         related_name='extra_meetings_attended',
+        # on_delete=models.CASCADE,
         blank=True
         # null=True# allows empty members list initially
     )
