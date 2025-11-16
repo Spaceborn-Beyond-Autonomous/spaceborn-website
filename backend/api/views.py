@@ -16,12 +16,18 @@ from rest_framework.throttling import AnonRateThrottle
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from drf_spectacular.utils import extend_schema, extend_schema_view
+
 from .models import User, Team, Project, Task, Meeting, Revenue
 from .serializers import *
 from .permissions import *
 from api.task import *
 
 # -------------------- LOGIN / LOGOUT --------------------
+
+@extend_schema_view(
+    post=extend_schema(tags=['Authentication'])
+)
 class LoginView(APIView):
     throttle_classes = [AnonRateThrottle]
 
@@ -56,7 +62,9 @@ class LoginView(APIView):
 
         return response
 
-
+@extend_schema_view(
+    post=extend_schema(tags=['Authentication'])
+)
 class LogoutView(APIView):
     def post(self, request):
         response = Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
@@ -66,6 +74,9 @@ class LogoutView(APIView):
 
 
 # -------------------- PASSWORD RESET --------------------
+@extend_schema_view(
+    post=extend_schema(tags=['Authentication'])
+)
 class PasswordResetRequestView(APIView):
     def post(self, request):
         email = request.data.get('email')
@@ -92,7 +103,9 @@ class PasswordResetRequestView(APIView):
 
         return Response({"message": "Password reset email sent if user exists."})
 
-
+@extend_schema_view(
+    post=extend_schema(tags=['Authentication'])
+)
 class PasswordResetConfirmView(APIView):
     def post(self, request, uidb64, token):
         try:
@@ -115,6 +128,10 @@ class PasswordResetConfirmView(APIView):
 
 
 # -------------------- DASHBOARD --------------------
+@extend_schema_view(
+    get=extend_schema(tags=['Dashboard']),
+    post=extend_schema(tags=['Dashboard'])
+)
 class DashboardView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -143,6 +160,12 @@ class DashboardView(APIView):
 
 
 # -------------------- MEETINGS --------------------
+@extend_schema_view(
+    get=extend_schema(tags=['Meetings']),
+    post=extend_schema(tags=['Meetings']),
+    put=extend_schema(tags=['Meetings']),
+    delete=extend_schema(tags=['Meetings'])
+)
 class MeetingView(APIView):
     permission_classes = [IsAdmin]
 
@@ -257,7 +280,10 @@ class MeetingView(APIView):
 
         return Response({"message": f"Meeting {meeting_id} deleted successfully."}, status=status.HTTP_200_OK)
 
-
+@extend_schema_view(
+    post=extend_schema(tags=['Meetings']),
+    patch=extend_schema(tags=['Meetings'])
+)
 class MeetingAttendanceView(APIView):
     permission_classes = [IsAdmin]
 
@@ -281,6 +307,12 @@ class MeetingAttendanceView(APIView):
 
 
 # -------------------- ADMIN USERS --------------------
+@extend_schema_view(
+    get=extend_schema(tags=['Users']),
+    post=extend_schema(tags=['Users']),
+    put=extend_schema(tags=['Users']),
+    delete=extend_schema(tags=['Users'])
+)
 class Admin_UsersView(APIView):
     permission_classes = [IsAdmin]
 
@@ -375,6 +407,12 @@ class Admin_UsersView(APIView):
 
 
 # -------------------- TASKS --------------------
+@extend_schema_view(
+    get=extend_schema(tags=['Tasks']),
+    post=extend_schema(tags=['Tasks']),
+    put=extend_schema(tags=['Tasks']),
+    delete=extend_schema(tags=['Tasks'])
+)
 class TaskView(APIView):
     permission_classes = [IsAdminOrCore]
 
@@ -427,6 +465,12 @@ class TaskView(APIView):
 
 
 # -------------------- PROJECTS --------------------
+@extend_schema_view(
+    get=extend_schema(tags=['Projects']),
+    post=extend_schema(tags=['Projects']),
+    put=extend_schema(tags=['Projects']),
+    delete=extend_schema(tags=['Projects'])
+)
 class ProjectsView(APIView):
     permission_classes = [IsAdminOrCore]
 
