@@ -20,7 +20,6 @@ export default function TeamSection() {
     { name: 'Ayush Bhramar', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/ayush-bhramar-a75944390/', image: '/team/ayush.png' },
     { name: 'Soubhagya Nayak', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/soubhagya-nayak-27b9b72a7/', image: '/team/soubhagya.png' },
     { name: 'Hashim Mohamed', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/hashimmohamedta/', image: '/team/hashim.png' },
-    { name: 'Ashutosh Rao', role: 'Core Team Member', linkedin: 'https://www.linkedin.com/in/ashutosh-rao-282856272/', image: '/team/ashutosh.png' },
   ]
 
   const innerGradient = `linear-gradient(

@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from datetime import timedelta
+import dj_database_url
 from dotenv import load_dotenv
 import dj_database_url
 
@@ -62,6 +63,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -112,6 +114,8 @@ REST_FRAMEWORK = {
         'anon': '100/hour',
         'user': '1000/hour',
     },
+     # Add drf-spectacular settings
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 ROOT_URLCONF = 'drone.urls'
@@ -137,30 +141,27 @@ WSGI_APPLICATION = 'drone.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASE_URL = os.getenv('DATABASE_URL', None)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('POSTGRES_DB'),
+#         'USER': os.getenv('POSTGRES_USER'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+#         'HOST': os.getenv('POSTGRES_HOST'),
+#         'PORT': os.getenv('POSTGRES_PORT', 5432),
+#         'CONN_MAX_AGE': 600
+#     }
+# }
 
-if DATABASE_URL:
-    # If you set a full connection string in .env
-    DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
-    }
-else:
-    # Fallback to individual variables
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('POSTGRES_DB'),
-            'USER': os.getenv('POSTGRES_USER'),
-            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-            'HOST': os.getenv('POSTGRES_HOST'),
-            'PORT': os.getenv('POSTGRES_PORT', 5432),
-            'OPTIONS': {
-                'sslmode': 'require'
-            },
-            'CONN_MAX_AGE': 600,
-        }
-    }
+# Use the DATABASE_URL from environment or default to your provided URL for development
+DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://neondb_owner:npg_bdcnwyVL97Gr@ep-old-hat-a4uvykaz-pooler.us-east-1.aws.neon.tech/spaceborn_db?sslmode=require&channel_binding=require')
 
+DATABASES = {
+    'default': dj_database_url.config(
+        default=DATABASE_URL,
+        conn_max_age=600,
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -227,4 +228,12 @@ LOGGING = {
         'handlers': ['console'],
         'level': 'INFO',
     },
+}
+
+# Add at the end of drone/settings.py
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'SpaceBorn API',
+    'DESCRIPTION': 'API documentation for the SpaceBorn project',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }

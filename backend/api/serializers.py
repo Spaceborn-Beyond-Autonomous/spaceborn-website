@@ -1,6 +1,11 @@
 from rest_framework import serializers
 from .models import User, Team, Project, Task, Revenue, Meeting
 
+# 1 --- Authentication Serializer ---
+class AuthenticationSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(required=True, write_only=True)
+
 
 # 2️⃣ --- User Serializer ---
 class UserSerializer(serializers.ModelSerializer):

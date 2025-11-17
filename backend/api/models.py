@@ -1,7 +1,30 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.hashers import make_password
+
+
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email_id, full_name, password=None, **extra_fields):
+        if not email_id:
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email_id)
+        user = self.model(email=email, full_name=full_name, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email_id, full_name, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('role', 'admin')
+        
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self.create_user(email_id, full_name, password, **extra_fields)
 
 
 # -----------------------
@@ -22,6 +45,9 @@ class Team(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        db_table = 'teams'  # Custom table name
+
 # -----------------------
 # USER MODEL
 # -----------------------
@@ -40,23 +66,23 @@ class User(AbstractUser):
     
     full_name = models.CharField(max_length=255, null=False, blank=False)
     
-    # password = models.CharField(max_length=128, null=False, blank=False)
-    alternative_email_id = models.EmailField(unique=True, null=False, blank=False)
-    age = models.PositiveIntegerField(null=False, blank=False)
+    # Make these fields nullable
+    alternative_email_id = models.EmailField(unique=True, null=True, blank=True)
+    age = models.PositiveIntegerField(null=True, blank=True)
     position = models.CharField(max_length=50, null=True, blank=True)
-    contact_no1 = models.CharField(max_length=15, null=False, blank=False)
+    contact_no1 = models.CharField(max_length=15, null=True, blank=True)
     contact_no2 = models.CharField(max_length=15, null=True, blank=True)
     linkedin = models.URLField(blank=True, null=True)
     github = models.URLField(blank=True, null=True)
     gender = models.CharField(
         max_length=10,
         choices=[('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')],
-        null=False,
-        blank=False
+        null=True,
+        blank=True
     )
     # photo = models.ImageField(upload_to='profiles/', null=True, blank=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='employee')
-    joined_on = models.DateField()
+    joined_on = models.DateField(null=True, blank=True)
     
     assigned_meetings = models.IntegerField(default=0)
     joined_meetings = models.IntegerField(default=0)
@@ -73,11 +99,13 @@ class User(AbstractUser):
     blank=True
 )
 
-  
+    objects = CustomUserManager()  # Add custom manager
 
     def __str__(self):
         return self.full_name
-    
+
+    class Meta:
+        db_table = 'users'  # Custom table name
 
 # -----------------------
 # PROJECT MODEL (COMBINED)
@@ -114,6 +142,8 @@ class Project(models.Model):
     def __str__(self):
         return f"{self.name} ({self.status})"
 
+    class Meta:
+        db_table = 'projects'  # Custom table name
 
 # -----------------------
 # TASK MODEL
@@ -144,6 +174,7 @@ class Task(models.Model):
     )
     
     class Meta:
+        db_table = 'tasks'  # Custom table name
         indexes = [
             models.Index(fields=['status']),
             models.Index(fields=['deadline']),
@@ -169,6 +200,9 @@ class Revenue(models.Model):
 
     def __str__(self):
         return f"Revenue ({self.period})"
+
+    class Meta:
+        db_table = 'revenue'  # Custom table name
 
 class Meeting(models.Model):
     title = models.CharField(max_length=100, null=False, blank=False)
@@ -201,3 +235,6 @@ class Meeting(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.team.name} ({self.date})" 
+
+    class Meta:
+        db_table = 'meetings'  # Custom table name
