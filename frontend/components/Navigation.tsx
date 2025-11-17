@@ -28,14 +28,14 @@ export default function Navigation() {
       }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center">
             <Image
               src="/images/logo.png"
               alt="Spaceborn Logo"
               width={40}
               height={40}
-              style={{ height: 'auto', width: 'auto' }}
-              className="w-10 h-auto"
+              style={{ height: '30', width: 'auto' }}
+              className="w-auto h-12"
             />
             <span className="text-2xl font-bold text-white tracking-widest text-glow">SPACEBORN</span>
           </div>
