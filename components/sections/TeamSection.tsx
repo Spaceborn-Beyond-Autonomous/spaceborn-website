@@ -2,7 +2,7 @@
 
 import { Linkedin } from 'lucide-react'
 import Image from 'next/image'
-import ProfileCard from './ProfileCard/ProfileCard'
+import ProfileCard from '@/components/cards/ProfileCard/ProfileCard'
 
 interface TeamMember {
   name: string
@@ -12,7 +12,6 @@ interface TeamMember {
 }
 
 export default function TeamSection() {
-  // TODO: Replace with API call
   const teamMembers: TeamMember[] = [
     { name: 'Gourav Thakur', role: 'Chief Operating Officer', linkedin: 'https://www.linkedin.com/in/gourav-thakur-77a682389/', image: '/team/gourav.png' },
     { name: 'Soubhagya Nayak', role: 'Chief Technology Officer', linkedin: 'https://www.linkedin.com/in/soubhagya-nayak-27b9b72a7/', image: '/team/soubhagya.png' },
