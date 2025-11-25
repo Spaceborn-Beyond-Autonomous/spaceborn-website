@@ -5,62 +5,77 @@ import Image from 'next/image'
 
 export default function FounderSection() {
   return (
-    <section id="founder" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-linear-to-b from-transparent via-gray-900/30 to-transparent" />
+    <section id="founder" className="py-20 relative overflow-hidden bg-black">
+      {/* Top vignette */}
+      <div className="absolute top-0 left-0 right-0 h-32 bg-linear-to-b from-black to-transparent z-10" />
+
+      {/* Bottom vignette */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-black to-transparent z-10" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl lg:text-6xl font-bold mb-4 text-glow">
-            <span className="text-white tracking-wider">MEET THE FOUNDER</span>
-          </h2>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-          <div className="relative sm:order-2 lg:order-1">
-            <div className="aspect-square hologram rounded-3xl overflow-hidden relative">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
+          {/* Image Section */}
+          <div className="relative order-1">
+            <div className="aspect-3/4 rounded-2xl overflow-hidden relative">
               <Image
                 src="/team/adarsh.jpeg"
                 alt="Adarsh Kumar"
                 fill
-                className="object-cover"
+                className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
                 priority
               />
-              <div className="absolute inset-0 bg-linear-to-br from-white/5 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-tr from-black/40 via-transparent to-black/20" />
             </div>
-            <div className="absolute -top-4 -left-4 w-24 h-24 bg-white/10 rounded-full animate-pulse-slow" />
-            <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-gray-500/10 rounded-full animate-spin-slow" />
           </div>
 
-          <div className="order-1 lg:order-2">
-            <h3 className="text-3xl lg:text-4xl font-bold text-white mb-2 uppercase tracking-wide">
-              Adarsh Kumar
-            </h3>
-            <p className="text-xl text-white/60 mb-6 uppercase tracking-wider">Founder & CEO</p>
+          {/* Content Section */}
+          <div className="order-2 flex flex-col justify-center">
+            {/* Large name typography - key feature from Dominic design */}
+            <h2 className="text-6xl sm:text-7xl lg:text-8xl font-bold mb-6 leading-none">
+              <span className="block text-white">Adarsh</span>
+              <span className="block text-white">Kumar</span>
+            </h2>
 
-            <p className="text-white/80 mb-4">
-              Adarsh Kumar, a Computer Science student at IIT Madras, founded Spaceborn with a vision
-              to revolutionize autonomous security through cutting-edge AI and drone technology.
-              He leads the mission to create intelligent security systems that protect what matters most.
-            </p>
+            {/* Role description */}
+            <div className="mb-8">
+              <h3 className="text-xl lg:text-2xl font-bold text-white mb-2 uppercase tracking-wide">
+                Founder & CEO
+              </h3>
+              <p className="text-sm text-white/50 uppercase tracking-wider">
+                IIT Madras • Computer Science
+              </p>
+            </div>
 
-            <p className="text-white/80 mb-6">
-              Under his leadership, Spaceborn has become a pioneer in autonomous security solutions,
-              combining advanced AI algorithms with precision engineering to deliver unmatched protection
-              for critical infrastructure worldwide.
-            </p>
+            {/* Bio text */}
+            <div className="space-y-4 mb-8 max-w-xl">
+              <p className="text-white/70 leading-relaxed">
+                Visionary founder revolutionizing autonomous security through cutting-edge AI and drone technology. Leading the mission to create intelligent security systems that protect what matters most.
+              </p>
 
-            <div className="flex gap-4">
+              <p className="text-white/70 leading-relaxed">
+                Under his leadership, Spaceborn pioneers autonomous security solutions, combining advanced AI algorithms with precision engineering to deliver unmatched protection for critical infrastructure worldwide.
+              </p>
+            </div>
+
+            {/* CTA and social links */}
+            <div className="flex items-center gap-4">
+              <button className="bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-white/90 transition-all duration-300 flex items-center gap-2 group">
+                Get in touch
+                <span className="group-hover:translate-x-1 transition-transform">→</span>
+              </button>
+
               <a
                 href="https://www.linkedin.com/in/adarsh-kumar-ab8111377/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hologram rounded-lg p-3 hover:border-white/50 transition-all duration-300 group"
+                className="border border-white/20 rounded-full p-3 hover:border-white/50 hover:bg-white/5 transition-all duration-300 group"
               >
                 <Linkedin className="h-5 w-5 text-white group-hover:scale-110 transition-transform" />
               </a>
+
               <a
                 href="mailto:adarsh@spaceborn.com"
-                className="hologram rounded-lg p-3 hover:border-white/50 transition-all duration-300 group"
+                className="border border-white/20 rounded-full p-3 hover:border-white/50 hover:bg-white/5 transition-all duration-300 group"
               >
                 <Mail className="h-5 w-5 text-white group-hover:scale-110 transition-transform" />
               </a>
