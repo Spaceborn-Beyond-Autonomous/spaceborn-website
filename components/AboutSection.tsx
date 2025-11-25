@@ -1,117 +1,103 @@
-'use client'
+"use client";
 
-import { Rocket, Brain, Globe, Zap } from 'lucide-react'
-import Image from 'next/image'
-import SpotlightCard from './SpotlightCard'
+import { useEffect, useRef } from "react";
+import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
+import { useScroll, cancelFrame, frame } from "motion/react";
+import { ReactLenis } from "lenis/react";
+import type { LenisRef } from "lenis/react";
 
-export default function AboutSection() {
-  const features = [
-    {
-      icon: Brain,
-      title: 'Intelligent Security',
-      description: 'Advanced AI algorithms enable real-time threat detection and autonomous security responses.',
-    },
-    {
-      icon: Rocket,
-      title: 'Rapid Response',
-      description: 'Lightning-fast deployment and response times for critical security situations.',
-    },
-    {
-      icon: Globe,
-      title: 'Global Protection',
-      description: 'Comprehensive security solutions for facilities, borders, and critical infrastructure worldwide.',
-    },
-    {
-      icon: Zap,
-      title: 'Always Ready',
-      description: 'Continuous monitoring and instant activation for 24/7 security coverage.',
-    },
-  ]
+import { Button } from "@/components/ui/button";
+import ParallaxCardEffect from "@/components/effects/ParallaxCardEffect";
+import { cn } from "@/lib/utils";
 
-  const stats = [
-    { number: '1000+', label: 'Sites Protected' },
-    { number: '99.9%', label: 'Threat Detection Rate' },
-    { number: '24/7', label: 'Security Coverage' },
-  ]
+const cardItems = [
+  {
+    title: "Autonomous Navigation",
+    description:
+      "Advanced AI-powered flight systems that enable drones to navigate complex environments with precision and adaptability in real-time.",
+    src: "https://plus.unsplash.com/premium_vector-1744029045529-3fcd4f715be6?q=80&w=2748&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    className: "bg-gray-800"
+  },
+  {
+    title: "Object Detection",
+    description:
+      "Real-time computer vision capabilities powered by YOLO and custom-trained models for intelligent target identification and tracking.",
+    src: "https://plus.unsplash.com/premium_vector-1697729849330-ef5db47d3246?q=80&w=2814&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    className: "bg-slate-700"
+  },
+  {
+    title: "Swarm Intelligence",
+    description:
+      "Multi-drone coordination systems that leverage distributed AI to accomplish complex missions with seamless collaboration.",
+    src: "https://plus.unsplash.com/premium_vector-1697729780111-058eea198643?q=80&w=2648&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    className: "bg-gray-700"
+  },
+  {
+    title: "Edge Computing",
+    description:
+      "Onboard AI processing that delivers millisecond response times, enabling critical decision-making without cloud dependency.",
+    src: "https://plus.unsplash.com/premium_vector-1721220820381-71da4f8b1adf?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    className: "bg-slate-800"
+  },
+  {
+    title: "Adaptive Learning",
+    description:
+      "Machine learning systems that continuously improve flight patterns and operational efficiency through real-world mission data.",
+    src: "https://plus.unsplash.com/premium_vector-1725703994559-09c72f2a317d?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    className: "bg-gray-900"
+  }
+];
+
+export type CardItemType = (typeof cardItems)[number];
+
+export default function Page() {
+  const lenisRef = useRef<LenisRef>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  useEffect(() => {
+    function update(data: { timestamp: number }) {
+      const time = data.timestamp;
+      lenisRef.current?.lenis?.raf(time);
+    }
+
+    frame.update(update, true);
+
+    return () => cancelFrame(update);
+  }, []);
+
+  const ParallaxCardItem = ({ item, id }: { item: CardItemType; id: number }) => {
+    const targetScale = 1 - (cardItems.length - id) * 0.05;
+
+    return (
+      <ParallaxCardEffect
+        id={id}
+        progress={scrollYProgress}
+        range={[id * 0.25, 1]}
+        targetScale={targetScale}
+        className={cn("relative flex flex-col rounded-lg px-14 py-8", item.className)}>
+        <div className="space-y-4 text-center">
+          <h2 className="text-center text-2xl font-semibold">{item.title}</h2>
+          <p>{item.description}</p>
+        </div>
+      </ParallaxCardEffect>
+    );
+  };
 
   return (
-    <section id="about" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-linear-to-b from-transparent via-gray-900/20 to-transparent" />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-6xl font-bold mb-6 text-glow">
-            <span className="text-white tracking-wider">SECURITY FIRST</span>
-          </h2>
-          <p className="text-xl text-white/80 max-w-3xl mx-auto">
-            At Spaceborn, we're not just building drones—we're crafting the future of autonomous security.
-            Our mission is to protect what matters most, creating intelligent security systems
-            that provide unmatched surveillance and threat response capabilities.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {features.map((feature) => (
-            <SpotlightCard
-              key={feature.title}
-              className="rounded-2xl p-6 hover:border-white/50 transition-all duration-300 group"
-              spotlightColor="rgba(180, 180, 180, 0.15)"
-            >
-              <div className="mb-4">
-                <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center transition-transform">
-                  <feature.icon className="h-6 w-6 text-black" />
-                </div>
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-3 uppercase tracking-wide">
-                {feature.title}
-              </h3>
-              <p className="text-white/70">{feature.description}</p>
-            </SpotlightCard>
+    <>
+      <ReactLenis root options={{ autoRaf: false }} ref={lenisRef} />
+      <div ref={containerRef}>
+        <div className="mx-auto max-w-2xl pt-14">
+          {cardItems.map((cardItem, i) => (
+            <ParallaxCardItem item={cardItem} key={i} id={i} />
           ))}
         </div>
-
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h3 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide text-glow">
-              Our Vision for Security
-            </h3>
-            <p className="text-white/80 mb-6">
-              We envision a future where autonomous security drones seamlessly integrate with existing security infrastructure,
-              providing comprehensive protection for facilities, borders, events, and critical assets
-              with unprecedented precision and reliability.
-            </p>
-            <p className="text-white/80 mb-8">
-              Every Spaceborn security drone is equipped with advanced AI, enabling real-time threat assessment
-              and autonomous response capabilities. Our technology doesn't just monitor—it analyzes,
-              predicts, and responds intelligently to security challenges.
-            </p>
-
-            <div className="grid grid-cols-3 gap-6">
-              {stats.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <div className="text-2xl font-bold text-white">{stat.number}</div>
-                  <div className="text-sm text-white/60">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="relative">
-            <div className="aspect-square hologram rounded-3xl flex items-center justify-center relative overflow-hidden">
-              <div className="absolute inset-0 cyber-grid opacity-20" />
-              <Image
-                src="/images/drone.png"
-                alt="Security Drone"
-                width={600}
-                height={600}
-                className="relative z-10 object-fit"
-              />
-            </div>
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full animate-spin-slow" />
-            <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-gray-500/20 rounded-full animate-pulse" />
-          </div>
-        </div>
       </div>
-    </section>
-  )
+    </>
+  );
 }
