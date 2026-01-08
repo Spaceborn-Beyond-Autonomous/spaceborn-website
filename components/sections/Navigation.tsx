@@ -63,8 +63,16 @@ export default function Navigation() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-linear-to-r from-white/50 to-white group-hover:w-full transition-all duration-300" />
               </a>
             ))}
-            <Button className="bg-white/10 text-white hover:bg-white/20 border border-white/20 backdrop-blur-sm rounded-full px-6 py-2 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-white/10">
-              <span className="uppercase tracking-wider text-sm font-semibold">Get Started</span>
+            <Button
+              onClick={() =>
+                window.location.href =
+                'https://github.com/Spaceborn-Beyond-Autonomous/spaceborn-desktop-app/releases/download/v1.0.0/Spaceborn.Setup.1.0.0.exe'
+              }
+              className="cursor-default bg-white/10 text-white hover:bg-white/20 border border-white/20 backdrop-blur-sm rounded-full px-6 py-2 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-white/10"
+            >
+              <span className="uppercase tracking-wider text-sm font-semibold">
+                Download
+              </span>
             </Button>
           </div>
 
