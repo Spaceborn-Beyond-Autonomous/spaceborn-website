@@ -1,6 +1,6 @@
 'use client'
 
-import { Linkedin } from 'lucide-react'
+// import { Linkedin } from 'lucide-react'
 import Image from 'next/image'
 
 interface TeamMember {
@@ -13,10 +13,11 @@ interface TeamMember {
 export default function TeamSection() {
   const teamMembers: TeamMember[] = [
     { name: "Adarsh Kumar (Founder)", role: "Chief Executive Officer", linkedin: "https://www.linkedin.com/in/adarsh-kumar-ab8111377/", image: "/team/adarsh.png" },
-    { name: 'Ayush Bhramar (Co-Founder)', role: 'Chief Hardware & Embedded Officer', linkedin: 'https://www.linkedin.com/in/ayush-bhramar-a75944390/', image: '/team/ayush.png' },
-    { name: 'Soubhagya Nayak', role: 'Chief Technology Officer', linkedin: 'https://www.linkedin.com/in/soubhagya-nayak-27b9b72a7/', image: '/team/soubhagya.png' },
-    { name: 'Hashim Mohamed', role: 'Chief System Architect', linkedin: 'https://www.linkedin.com/in/hashimmohamedta/', image: '/team/hashim.png' },
+    { name: 'Soubhagya Nayak (Co-Founder)', role: 'Chief Technology Officer', linkedin: 'https://www.linkedin.com/in/soubhagya-nayak-27b9b72a7/', image: '/team/soubhagya.png' },
     { name: 'Vipul Bhamare', role: 'Chief Robotics & Simulation Officer', linkedin: 'https://www.linkedin.com/in/vipul-bhamare-54579a384/', image: '/team/vipul.png' },
+    { name: 'Abinash Das', role: 'Chief Hardware Officer', linkedin: 'https://www.linkedin.com/in/abinash-das-98a335327/', image: '/team/abinash.jpeg' },
+    { name: 'Ripusudan Kumar Jha', role: 'Chief System Architect', linkedin: 'https://www.linkedin.com/in/ripusudan-jha/', image: '/team/ripusudan.png' },
+    { name: 'Aayush Krishna', role: 'Chief Research Officer', linkedin: 'https://www.linkedin.com/in/aayush-krishna-b79996293/', image: '/team/aayush.png' },
   ];
 
   return (
@@ -43,12 +44,12 @@ export default function TeamSection() {
                   src={member.image}
                   alt={member.name}
                   fill
+                  sizes="
+                  (max-width: 768px) 50vw,
+                  (max-width: 1024px) 33vw,25vw
+                  "
                   className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
                 />
-                {/* LinkedIn Overlay on Hover
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <Linkedin className="w-8 h-8 text-white" />
-                </div> */}
               </div>
 
               {/* Member Info */}
