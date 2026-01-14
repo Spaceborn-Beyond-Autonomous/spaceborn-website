@@ -16,7 +16,7 @@ export default function TeamSection() {
     { name: 'Soubhagya Nayak (Co-Founder)', role: 'Chief Technology Officer', linkedin: 'https://www.linkedin.com/in/soubhagya-nayak-27b9b72a7/', image: '/team/soubhagya.png' },
     { name: 'Vipul Bhamare', role: 'Chief Robotics & Simulation Officer', linkedin: 'https://www.linkedin.com/in/vipul-bhamare-54579a384/', image: '/team/vipul.png' },
     { name: 'Abinash Das', role: 'Chief Hardware Officer', linkedin: 'https://www.linkedin.com/in/abinash-das-98a335327/', image: '/team/abinash.jpeg' },
-    { name: 'Ripusudan Kumar Jha', role: 'Chief System Architect', linkedin: 'https://www.linkedin.com/in/ripusudan-jha/', image: '/team/ripusudan.png' },
+    { name: 'Ripusudan Jha', role: 'Chief System Architect', linkedin: 'https://www.linkedin.com/in/ripusudan-jha/', image: '/team/ripusudan.png' },
     { name: 'Aayush Krishna', role: 'Chief Research Officer', linkedin: 'https://www.linkedin.com/in/aayush-krishna-b79996293/', image: '/team/aayush.png' },
   ];
 
