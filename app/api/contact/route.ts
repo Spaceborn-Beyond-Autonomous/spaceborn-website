@@ -1,3 +1,5 @@
+export const runtime = "nodejs"
+
 import { NextResponse } from "next/server"
 import { Resend } from "resend"
 
@@ -17,6 +19,7 @@ export async function POST(req: Request) {
     await resend.emails.send({
       from: "Contact Form <onboarding@resend.dev>",
       to: ["ripusudankumarjha05@gmail.com"],
+      replyTo: email,
       subject: `Contact Form: ${name}`,
       html: `
         <h3>New Contact Message</h3>
@@ -29,7 +32,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error("Resend error:", error)
+    console.error("CONTACT API ERROR:", error)
     return NextResponse.json(
       { success: false },
       { status: 500 }
