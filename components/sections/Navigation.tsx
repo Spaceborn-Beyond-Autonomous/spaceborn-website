@@ -22,6 +22,7 @@ export default function Navigation() {
     { name: 'Products', href: '#products' },
     { name: 'Contact', href: '#contact' },
   ]
+  const dashboardUrl = 'https://spaceborn-dashboard-official.vercel.app/'
 
   return (
     <nav
@@ -63,6 +64,11 @@ export default function Navigation() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-linear-to-r from-white/50 to-white group-hover:w-full transition-all duration-300" />
               </a>
             ))}
+            <a href={dashboardUrl} target="_blank" rel="noopener noreferrer">
+              <Button className="cursor-default bg-white/10 text-white hover:bg-white/20 border border-white/20 backdrop-blur-sm rounded-full px-6 py-2 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-white/10">
+                <span className="uppercase tracking-wider text-sm font-semibold">Login</span>
+              </Button>
+            </a>
             <Button
               onClick={() =>
                 window.location.href =
@@ -118,6 +124,17 @@ export default function Navigation() {
                       {item.name}
                     </motion.a>
                   ))}
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: navItems.length * 0.1 }}
+                  >
+                    <a href={dashboardUrl} target="_blank" rel="noopener noreferrer" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Button className="w-full mt-2 bg-white/10 text-white hover:bg-white/20 border border-white/20 backdrop-blur-sm rounded-full py-3 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-white/10">
+                        <span className="uppercase tracking-wider text-sm font-semibold">Login</span>
+                      </Button>
+                    </a>
+                  </motion.div>
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
