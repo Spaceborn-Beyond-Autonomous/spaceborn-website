@@ -14,7 +14,7 @@ export default function TeamSection() {
   const teamMembers: TeamMember[] = [
     { name: "Adarsh Kumar (Founder)", role: "Chief Executive Officer", linkedin: "https://www.linkedin.com/in/adarsh-kumar-ab8111377/", image: "/team/adarsh.png" },
         // { name: 'Vipul Bhamare', role: 'Chief Robotics & Simulation Officer', linkedin: 'https://www.linkedin.com/in/vipul-bhamare-54579a384/', image: '/team/vipul.png' },
-    { name: 'Md Ayan', role: 'Chief Robotics & Simulation Officer', linkedin: 'https://www.linkedin.com/in/mohammad-ayan-207643340', image: '/team/ayan.jpeg' },
+    // { name: 'Md Ayan', role: 'Chief Robotics & Simulation Officer', linkedin: 'https://www.linkedin.com/in/mohammad-ayan-207643340', image: '/team/ayan.jpeg' },
     { name: 'Abinash Das', role: 'Chief Hardware Officer', linkedin: 'https://www.linkedin.com/in/abinash-das-98a335327/', image: '/team/abinash.jpeg' },
   ];
 
