@@ -89,6 +89,7 @@ export default function Page() {
 
   return (
     <section id="about">
+      
       <ReactLenis root options={{ autoRaf: false }} ref={lenisRef} />
       <div ref={containerRef}>
         <div className="mx-auto max-w-2xl pt-14">

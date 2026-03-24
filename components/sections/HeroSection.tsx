@@ -14,12 +14,12 @@ export default function HeroSection() {
         <div
           className="
                       absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-                      w-[400px] h-[400px] 
-                      sm:w-[600px] sm:h-[600px] 
-                      lg:w-[900px] lg:h-[900px] pointer-events-none"
+                      w-100 h-100 
+                      sm:w-150 sm:h-150 
+                      lg:w-225 lg:h-225 pointer-events-none"
         >
           <div className="absolute inset-0 rounded-full bg-gradient-radial from-white/10 via-white/5 to-transparent blur-3xl animate-pulse-slow" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-3 bg-linear-to-r from-transparent via-white/20 to-transparent rounded-full blur-2xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-175 h-3 bg-linear-to-r from-transparent via-white/20 to-transparent rounded-full blur-2xl" />
         </div>
 
         {/* Main content container */}

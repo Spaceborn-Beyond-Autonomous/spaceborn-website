@@ -25,20 +25,12 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative overflow-hidden bg-black">
+    <footer className="relative overflow-hidden bg-[#0a0a0a]">
       <div className="absolute inset-0 bg-linear-to-r from-gray-900/20 via-transparent to-gray-900/20" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div
-          className="
-                  grid
-                  grid-cols-1
-                  sm:grid-cols-2
-                  lg:grid-cols-4
-                  gap-10
-                  mb-14
-                "
-        >
+          className="flex flex-col md:flex-row items-center justify-between gap-10 mb-14">
           <div className="max-w-md">
             <div className="flex items-center gap-3 mb-4">
               <Rocket className="h-7 w-7 text-white" />
@@ -66,7 +58,7 @@ export default function Footer() {
           </div>
 
           {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category}>
+            <div key={category} className="hidden md:flex flex-col">
               <h3 className="text-sm sm:text-lg font-semibold text-white mb-3 uppercase tracking-wider">
                 {category}
               </h3>
@@ -89,14 +81,7 @@ export default function Footer() {
         <div className="hologram rounded-2xl p-6 sm:p-8 mb-12">
           <div className="grid md:grid-cols-2 gap-6 items-center">
             <div>
-              <h3 className="
-              text-2xl
-              font-bold
-              text-white 
-              mb-2 
-              uppercase 
-              tracking-wide 
-              text-glow">
+              <h3 className=" text-2xl font-bold text-white  mb-2  uppercase  tracking-wide  text-glow">
                 Security Updates
               </h3>
               <p className="text-white/80">
@@ -105,42 +90,13 @@ export default function Footer() {
               </p>
             </div>
             <div
-              className="
-                        flex 
-                        flex-col
-                        md:flex-col
-                        lg:flex-row
-                        gap-3
-                      "
-            >
+              className=" flex  flex-col md:flex-col lg:flex-row gap-3">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="
-                          flex-1
-                          h-auto lg:h-[52px]
-                          px-4
-                          py-3 lg:py-0
-                          bg-white/5
-                          border border-white/20
-                          rounded-lg
-                          text-white
-                          placeholder:text-white/50
-                          focus:outline-none
-                          focus:border-white
-                          "
+                className=" flex-1 h-auto lg:h-13 px-4 py-3 lg:py-0 bg-white/5 border border-white/20 rounded-lg text-white placeholder:text-white/50 focus:outline-none focus:border-white"
               />
-
-              <Button
-                className="
-                          bg-white text-black hover:bg-gray-200
-                          h-auto lg:h-[52px]
-                          px-6
-                          py-3 lg:py-0
-                          font-semibold
-                          tracking-wider
-                        "
-              >
+              <Button className="  bg-white text-black hover:bg-gray-200  h-auto lg:h-13  px-6  py-3 lg:py-0  font-semibold  tracking-wider">
                 SUBSCRIBE
               </Button>
             </div>
@@ -153,7 +109,6 @@ export default function Footer() {
               © 2026 Spaceborn Technologies. All rights reserved.
             </div>
             <div className="flex items-center gap-6 text-sm text-white/60">
-              {/* <span>Made with ❤️ for the future of security</span> */}
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
                 <span className="uppercase tracking-wider">
