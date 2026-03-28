@@ -72,7 +72,7 @@ export default function About() {
             {/* CAROUSEL */}
             <div className="relative z-10 w-full max-w-6xl mx-auto">
 
-                <div className="relative h-[460px] flex items-center justify-center overflow-hidden">
+                <div className="relative h-115x items-center justify-center overflow-hidden">
 
                     <AnimatePresence mode="wait">
                         <motion.div
@@ -84,7 +84,7 @@ export default function About() {
                             className="absolute w-full flex flex-col md:flex-row gap-8 items-center"
                         >
                             {/* IMAGE */}
-                            <div className="w-full md:w-[60%] h-[320px] md:h-[420px] overflow-hidden rounded-2xl relative group">
+                            <div className="w-full md:w-[60%] h-80 md:h-105 overflow-hidden rounded-2xl relative group">
                                 <img
                                     src={items[index].img}
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -92,7 +92,7 @@ export default function About() {
                                 />
 
                                 {/* subtle overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                                <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
                             </div>
 
                             {/* TEXT */}

@@ -39,7 +39,7 @@ export default function RocketHero() {
                         style={{ y: tipY }}
                         className="
     w-0 h-0 
-    border-l-[108px] border-r-[108px] border-b-[150px]
+    border-l-108 border-r-108 border-b-150
     border-l-transparent border-r-transparent border-b-white mt-30
   "
                     />
@@ -49,7 +49,7 @@ export default function RocketHero() {
                         style={{ y: bodyY }}
                         className="
     w-54 h-100 
-    bg-gradient-to-b from-gray-200 to-gray-600 
+    bg-linear-to-b from-gray-200 to-gray-600 
     rounded-b-[50px] relative
   "
                     >

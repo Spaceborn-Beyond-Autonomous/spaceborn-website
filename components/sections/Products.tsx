@@ -58,7 +58,7 @@ export default function ProductsSection() {
           >
 
             {/* IMAGE */}
-            <div className="h-[420px] overflow-hidden">
+            <div className="h-105 overflow-hidden">
               <img
                 src={product.img}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -108,7 +108,7 @@ export default function ProductsSection() {
                 </div>
 
                 {/* DECORATIVE LINE */}
-                <div className="mt-8 h-[1px] w-full bg-white/10" />
+                <div className="mt-8 h-px w-full bg-white/10" />
 
               </div>
             </div>

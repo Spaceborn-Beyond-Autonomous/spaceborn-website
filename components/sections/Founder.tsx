@@ -75,7 +75,7 @@ export default function TeamSection() {
         {/* RIGHT FLOATING IMAGE CARD */}
         <div className="relative flex justify-center">
 
-          <div className="relative h-[480px] w-[320px] rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
+          <div className="relative h-120 w-[320px] rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
 
             <Image
               src={member.image}
