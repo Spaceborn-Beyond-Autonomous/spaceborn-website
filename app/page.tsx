@@ -10,13 +10,14 @@ import HeroSection2 from '@/components/sections/HeroSection2'
 import About from '@/components/sections/About'
 import Products from '@/components/sections/Products'
 import Contact from '@/components/sections/Contact'
+import HeroSection3 from '@/components/sections/HeroSection3'
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-black">
       <Navigation />
       <main className="pt-16">
-        <HeroSection2 />
+        <HeroSection3 />
         <About />
         <Products/>
         <TeamSection />

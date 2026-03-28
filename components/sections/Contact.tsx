@@ -1,10 +1,14 @@
 'use client'
 
 import { Mail, Phone, MapPin } from 'lucide-react'
+import { StarsBackground } from '../backgrounds/Stars'
 
 export default function Contact() {
     return (
-        <div id='contact' className="min-h-screen bg-black flex">
+        <div id='contact' className="min-h-screen relative flex">
+            <div className="absolute inset-0 z-0">
+                <StarsBackground />
+            </div>
             <div className="w-full shadow-2xl py-10">
 
                 <div className="px-8 py-10 text-center">
@@ -14,7 +18,7 @@ export default function Contact() {
                     </p>
                 </div>
 
-                <div className="flex flex-col md:h-[70vh] cartoon-border2 mx-auto rounded-3xl overflow-clip md:flex-row max-w-[85vw]">
+                <div className="flex relative flex-col md:h-[70vh] bg-black cartoon-border2 mx-auto rounded-3xl overflow-clip md:flex-row max-w-[85vw]">
 
                     <div className="md:w-1/3 h-[70vh] bg-[#0f0f0f] p-8 flex flex-col justify-between">
                         <div>

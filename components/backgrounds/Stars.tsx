@@ -8,7 +8,7 @@ import {
     type Transition,
     useMotionValue,
     useSpring,
-} from "motion/react";
+} from "framer-motion";
 
 import { cn } from "@/lib/utils";
 
@@ -109,13 +109,16 @@ export function StarsBackground({
         <div
             data-slot="stars-background"
             className={cn(
-                "relative size-full overflow-hidden bg-[radial-gradient(ellipse_at_bottom,#262626_0%,#000_100%)]",
+                "relative size-full overflow-hidden",
                 className,
             )}
             onMouseMove={handleMouseMove}
             {...props}
         >
-            <motion.div style={{ x: springX, y: springY }}>
+            <motion.div
+                className="absolute inset-0 z-0 pointer-events-none"
+                style={{ x: springX, y: springY }}
+            >
                 <StarLayer
                     count={1000}
                     size={1}
@@ -143,7 +146,7 @@ export function StarsBackground({
                     starColor={starColor}
                 />
             </motion.div>
-            {children}
+            <div className="relative z-10">{children}</div>
         </div>
     );
 }

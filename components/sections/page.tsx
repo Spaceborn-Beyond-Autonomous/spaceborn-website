@@ -6,6 +6,7 @@ import TeamSection from '@/components/sections/Founder'
 import ProductsSection from '@/components/sections/ProductsSection'
 import ContactSection from '@/components/sections/ContactSection'
 import Footer from '@/components/sections/Footer'
+import HeroSection2 from './HeroSection2'
 
 export default function Home() {
   return (

@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import { ArrowRight, ChevronLeft, ChevronRight, Linkedin } from "lucide-react"
+import { ArrowRight, Linkedin } from "lucide-react"
 
 interface TeamMember {
   name: string
@@ -18,75 +18,79 @@ export default function TeamSection() {
       name: "Adarsh Kumar",
       role: "Founder & Chief Executive Officer",
       linkedin: "https://www.linkedin.com/in/adarsh-kumar-ab8111377/",
-      words: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem placeat id reiciendis earum harum quos perspiciatis, rem corporis officiis iure.",
+      words: "Building autonomous intelligence systems that redefine how machines perceive, decide, and act in the real world.",
       image: "/team/adarsh.png"
     },
   ]
 
-  const [currentIndex, setCurrentIndex] = useState(0)
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? teamMembers.length - 1 : prev - 1
-    )
-  }
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) =>
-      prev === teamMembers.length - 1 ? 0 : prev + 1
-    )
-  }
-
+  const [currentIndex] = useState(0)
   const member = teamMembers[currentIndex]
 
   return (
-    <section id="team" className="py-20 bg-[#0a0a0a]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div className="mb-16">
-          <h2 className="text-[2rem] md:text-[2.5rem] text-center uppercase font-bold text-white">
-            The Founder
+    <section className="relative py-28 px-20 bg-black overflow-hidden">
+
+      <div>
+        <p className="uppercase text-white relative z-20 text-center mb-20 text-[2.7rem] font-bold">The founder</p>
+      </div>
+
+      {/* BACKGROUND IMAGE */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={member.image}
+          alt={member.name}
+          fill
+          className="object-cover opacity-30 grayscale"
+        />
+        <div className="absolute inset-0 bg-linear-to-r from-black via-black/80 to-transparent" />
+      </div>
+
+      {/* CONTENT */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
+
+        {/* LEFT CONTENT */}
+        <div>
+
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">
+            {member.name}
           </h2>
-          <p className="mt-3 text-center text-white/60">Meet the brilliant minds behind Spaceborn</p>
+
+          <p className="text-white/60 text-lg mb-6">
+            {member.role}
+          </p>
+
+          <p className="text-white/70 max-w-lg leading-relaxed mb-8">
+            {member.words}
+          </p>
+
+          <button
+            onClick={() => window.open(member.linkedin, "_blank")}
+            className="group flex items-center gap-2 text-white border border-white/20 px-5 py-3 rounded-lg bg-white/5 hover:bg-white/10 transition"
+          >
+            <Linkedin className="h-5 w-5" />
+            View Profile
+            <ArrowRight className="h-4 group-hover:translate-x-1 transition" />
+          </button>
         </div>
 
-        <div className="flex relative z-0 flex-col-reverse md:flex-row items-center justify-center">
+        {/* RIGHT FLOATING IMAGE CARD */}
+        <div className="relative flex justify-center">
 
-          <div className="absolute z-0 top-1/2 -translate-y-1/2 h-48 w-[90%] rounded-full bg-white/3"></div>
-          
-          <div className="px-10 md:px-6 py-5 md:py-0">
-            <h3 className="text-white text-[2rem] font-semibold mb-2">
-              {member.name}
-            </h3>
-            <p className="text-gray-400 uppercase tracking-wide mb-6">
-              {member.role}
-            </p>
-            <p className="md:w-[30vw] text-white/50">
-              {member.words}
-            </p>
+          <div className="relative h-[480px] w-[320px] rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
 
-            <button onClick={() => window.open(member.linkedin, "_blank")} className="text-white w-full md:w-fit group flex items-center justify-center gap-1 border px-4 py-2 mt-5 rounded-lg cursor-pointer bg-white/5 hover:bg-white/10 transition">
-              View LinkedIn
-              <ArrowRight className="h-5 opacity-70 group-hover:translate-x-1 transition-all duration-200"/>
-            </button>
+            <Image
+              src={member.image}
+              alt={member.name}
+              fill
+              className="object-cover grayscale hover:grayscale-0 transition duration-500"
+            />
+
+            {/* subtle overlay */}
+            <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
+
           </div>
 
-          <div>
-            <div className="relative h-[50vh] aspect-3/4 cartoon-border2 overflow-hidden rounded-lg bg-zinc-900">
-              <Image src={member.image} alt={member.name} fill className="object-cover grayscale hover:grayscale-0 transition-all duration-500"/>
-            </div>
-          </div>
         </div>
 
-        {/* <div className="flex justify-center gap-6 mt-10">
-          <button onClick={prevSlide} className="p-3 border rounded-full cursor-pointer text-white hover:bg-white/10 transition">
-            <ChevronLeft />
-          </button>
-
-          <button onClick={nextSlide} className="p-3 border rounded-full cursor-pointer text-white hover:bg-white/10 transition">
-            <ChevronRight />
-          </button>
-        </div> */}
       </div>
     </section>
   )

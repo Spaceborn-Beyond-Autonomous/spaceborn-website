@@ -29,14 +29,14 @@ export default function Navigation() {
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-500 ${
         isScrolled
-          ? "bg-white/5 backdrop-blur-xl border-b border-white/20 shadow-lg shadow-black/10"
-          : "bg-white/2 backdrop-blur-md border-b border-white/10"
+          ? "bg-black/70 backdrop-blur-sm border-b border-white/50 shadow-lg shadow-black/10"
+          : "bg-black backdrop-blur-md border-b border-white/10"
       }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-3 group">
             <div className="relative">
-              <Image
+              <img
                 src="/images/logo.png"
                 alt="Spaceborn Logo"
                 width={40}
