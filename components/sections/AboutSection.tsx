@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useScroll, cancelFrame, frame } from "motion/react";
+import { useScroll, cancelFrame, frame } from "framer-motion";
 import { ReactLenis } from "lenis/react";
 import type { LenisRef } from "lenis/react";
 

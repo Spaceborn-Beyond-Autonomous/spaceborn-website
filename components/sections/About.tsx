@@ -72,7 +72,7 @@ export default function About() {
             {/* CAROUSEL */}
             <div className="relative z-10 w-full max-w-6xl mx-auto">
 
-                <div className="relative h-115x items-center justify-center overflow-hidden">
+                <div className="relative h-115 flex items-center justify-center overflow-hidden">
 
                     <AnimatePresence mode="wait">
                         <motion.div
