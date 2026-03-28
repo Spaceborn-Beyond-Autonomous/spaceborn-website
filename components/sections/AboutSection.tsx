@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useScroll, cancelFrame, frame } from "motion/react";
+import { useScroll, cancelFrame, frame } from "framer-motion";
 import { ReactLenis } from "lenis/react";
 import type { LenisRef } from "lenis/react";
 
@@ -89,6 +89,7 @@ export default function Page() {
 
   return (
     <section id="about">
+      
       <ReactLenis root options={{ autoRaf: false }} ref={lenisRef} />
       <div ref={containerRef}>
         <div className="mx-auto max-w-2xl pt-14">

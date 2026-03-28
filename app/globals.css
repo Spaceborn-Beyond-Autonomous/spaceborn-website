@@ -27,7 +27,7 @@
   * {
     border-color: hsl(var(--border));
   }
-  
+
   body {
     background: #000000;
     color: hsl(var(--foreground));
@@ -37,46 +37,63 @@
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
-  
+
   .galaxy-bg {
     background: transparent;
   }
-  
+
   @keyframes scan-line {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(100vh); }
+    0% {
+      transform: translateY(-100%);
+    }
+
+    100% {
+      transform: translateY(100vh);
+    }
   }
-  
+
   @keyframes glow-pulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.1); }
-    50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.5), 0 0 60px rgba(255, 255, 255, 0.2); }
+
+    0%,
+    100% {
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.1);
+    }
+
+    50% {
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.5), 0 0 60px rgba(255, 255, 255, 0.2);
+    }
   }
-  
+
   @keyframes grid-move {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(50px); }
+    0% {
+      transform: translateY(0);
+    }
+
+    100% {
+      transform: translateY(50px);
+    }
   }
-  
+
   .scan-line {
     animation: scan-line 8s linear infinite;
   }
-  
+
   .glow-border {
     animation: glow-pulse 2s ease-in-out infinite;
   }
-  
+
   .cyber-grid {
-    background-image: 
+    background-image:
       linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     background-size: 50px 50px;
     animation: grid-move 20s linear infinite;
   }
-  
+
   .text-glow {
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
   }
-  
+
   .hologram {
     position: relative;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
@@ -84,7 +101,7 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     overflow: hidden;
   }
-  
+
   .hologram::before {
     content: '';
     position: absolute;
@@ -93,34 +110,55 @@
     transform: translateX(-100%);
     animation: shimmer 3s infinite;
   }
-  
+
   @keyframes shimmer {
-    100% { transform: translateX(100%); }
+    100% {
+      transform: translateX(100%);
+    }
   }
-  
+
   @keyframes pulse-slow {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.5;
+    }
   }
-  
+
   @keyframes spin-slow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
   }
-  
+
   @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
   }
-  
+
   .animate-pulse-slow {
     animation: pulse-slow 3s ease-in-out infinite;
   }
-  
+
   .animate-spin-slow {
     animation: spin-slow 20s linear infinite;
   }
-  
+
   .animate-float {
     animation: float 3s ease-in-out infinite;
   }
@@ -138,4 +176,14 @@ button {
 *:focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
+}
+
+.cartoon-border1 {
+  border: 4px solid #000000;
+  box-shadow: 6px 6px 0px #000000;
+}
+
+.cartoon-border2 {
+  border: 2px solid #58585832;
+  box-shadow: 5px 5px 0px #ffffff2d;
 }

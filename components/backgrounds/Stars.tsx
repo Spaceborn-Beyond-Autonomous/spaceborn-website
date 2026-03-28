@@ -8,7 +8,7 @@ import {
     type Transition,
     useMotionValue,
     useSpring,
-} from "motion/react";
+} from "framer-motion";
 
 import { cn } from "@/lib/utils";
 
@@ -48,7 +48,7 @@ function StarLayer({
             data-slot="star-layer"
             animate={{ y: [0, -2000] }}
             transition={transition}
-            className={cn("absolute top-0 left-0 w-full h-[2000px]", className)}
+            className={cn("absolute top-0 left-0 w-full h-500", className)}
             {...props}
         >
             <div
@@ -60,7 +60,7 @@ function StarLayer({
                 }}
             />
             <div
-                className="absolute bg-transparent rounded-full top-[2000px]"
+                className="absolute bg-transparent rounded-full top-500"
                 style={{
                     width: `${size}px`,
                     height: `${size}px`,
@@ -109,13 +109,16 @@ export function StarsBackground({
         <div
             data-slot="stars-background"
             className={cn(
-                "relative size-full overflow-hidden bg-[radial-gradient(ellipse_at_bottom,#262626_0%,#000_100%)]",
+                "relative size-full overflow-hidden",
                 className,
             )}
             onMouseMove={handleMouseMove}
             {...props}
         >
-            <motion.div style={{ x: springX, y: springY }}>
+            <motion.div
+                className="absolute inset-0 z-0 pointer-events-none"
+                style={{ x: springX, y: springY }}
+            >
                 <StarLayer
                     count={1000}
                     size={1}
@@ -143,7 +146,7 @@ export function StarsBackground({
                     starColor={starColor}
                 />
             </motion.div>
-            {children}
+            <div className="relative z-10">{children}</div>
         </div>
     );
 }
